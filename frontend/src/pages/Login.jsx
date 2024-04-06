@@ -1,14 +1,17 @@
 import { Link } from "react-router-dom";
 import { DialogTrigger, Dialog } from "@/components/ui/dialog";
 import { useEffect } from "react";
+import Navbar from "@/components/Navbar/Navbar";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Navbar from "@/components/Navbar/Navbar";
 // import FacebookDialog from "@/components/Auth/Facebook/FacebookDialog";
 const INSTAGRAM_APP_ID = import.meta.env.VITE_INSTAGRAM_APP_ID; 
 console.log(INSTAGRAM_APP_ID)
-export default function Login() {
+
+
+const Login = () => {
   function GRANT_ACCESS_INSTA() {
     console.log("clicked");
     window.location.href = `https://api.instagram.com/oauth/authorize?client_id=${INSTAGRAM_APP_ID}
@@ -88,3 +91,6 @@ export default function Login() {
     </div>
   );
 }
+
+
+export default Login

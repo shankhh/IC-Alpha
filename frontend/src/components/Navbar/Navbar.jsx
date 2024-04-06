@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
-export default function Navbar({ textColorHeader = "#000" }) {
+const Navbar = ({ textColorHeader = "#000" }) => {
   return (
     <nav className="flex items-center justify-between mx-auto container  ">
       <div
@@ -47,3 +47,5 @@ export default function Navbar({ textColorHeader = "#000" }) {
     </nav>
   );
 }
+
+export default Navbar
