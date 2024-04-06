@@ -2,6 +2,9 @@ const mongoose = require(
 'mongoose'
 );
 
+/* 
+* Schema for Influencer for Mongo
+*/
 const InfluencerSchema = new mongoose.Schema({
     username: String,
     email: String,
