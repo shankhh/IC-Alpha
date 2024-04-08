@@ -28,7 +28,7 @@ const JoinOnboarding = () => {
       <div className="min-w-full flex justify-center">
         <form className="min-w-[40rem]">
           <div className="p-4 flex flex-col">
-            <label>Email</label>
+            <label className="text-sm font-medium">Email</label>
 
             <input
               onChange={(e) => setEmail(e.target.value)}
@@ -37,6 +37,7 @@ const JoinOnboarding = () => {
           </div>
         </form>
       </div>
+      <div className="flex min-w-full justify-center">
       <div className="flex flex-col gap-4 max-w-[20rem]">
         <div
           className="cursor-pointer px-4 p-2 rounded-md bg-black text-white min-w-full text-center"
@@ -47,6 +48,7 @@ const JoinOnboarding = () => {
         <div className="px-4 p-2 rounded-md bg-black text-white min-w-full text-center">
           Connect your facebook
         </div>
+      </div>
       </div>
     </section>
   );

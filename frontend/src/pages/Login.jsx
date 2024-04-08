@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 // import FacebookDialog from "@/components/Auth/Facebook/FacebookDialog";
+
 const INSTAGRAM_APP_ID = import.meta.env.VITE_INSTAGRAM_APP_ID; 
 console.log(INSTAGRAM_APP_ID)
 
@@ -19,11 +20,11 @@ const Login = () => {
   }
 
   return (
-    <div className="relative">
+    <div className="relative min-h-screen">
       <div className="z-40">
         <Navbar textColorHeader={"#fff"} />
       </div>
-      <div className="w-full  top-0 absolute lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+      <div className=" w-full min-h-screen  top-0 absolute lg:grid lg:grid-cols-2 ">
         <div className="hidden -z-10 bg-muted lg:block ">
           <div className="bg-black w-full h-full p-5"></div>
         </div>

@@ -1,7 +1,12 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useMemo } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "../ui/button";
 const Navbar = ({ textColorHeader = "#000" }) => {
+  const location = useLocation();
+  const isLogin = useMemo(() => {
+    return location.pathname.includes("login");
+  }, [location]);
+
   return (
     <nav className="flex items-center justify-between mx-auto container  ">
       <div
@@ -24,10 +29,10 @@ const Navbar = ({ textColorHeader = "#000" }) => {
       </div>
       <div className="flex gap-10">
         <Link to={"/discover"}>
-          <div> Discover</div>
+          <div className={isLogin ? "text-white" : null}> Discover</div>
         </Link>
         <Link to={"/community"}>
-          <div> Community </div>
+          <div className={isLogin ? "text-white" : null}> Community </div>
         </Link>
         <Link to={"/pricing"}>
           <div> Pricing </div>
@@ -40,12 +45,12 @@ const Navbar = ({ textColorHeader = "#000" }) => {
         <Link to={"/login"}>
           <Button variant="outline">Login</Button>
         </Link>
-        <Link to={"/register"}>
-          <Button>Register</Button>
+        <Link to={"/join"}>
+          <Button>Join</Button>
         </Link>
       </div>
     </nav>
   );
-}
+};
 
-export default Navbar
+export default Navbar;

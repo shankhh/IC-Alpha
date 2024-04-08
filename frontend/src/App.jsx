@@ -9,6 +9,7 @@ import JoinOnboarding from "./pages/Join/JoinOnboarding"
 import Discover from "./pages/Discover"
 import Community from "./pages/Community"
 import Pricing from "./pages/Pricing"
+import Temp from "./pages/Temp"
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/discover" Component={Discover} />
           <Route path="/community" Component={Community} />
           <Route path="/pricing" Component={Pricing} />
+          <Route path="/temp" Component={Temp} />
         </Routes>
       </Router>
     </>

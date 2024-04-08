@@ -44,12 +44,12 @@ router.get("/seed", async function (req, res) {
     const newInfluencer = new Influencer({
       username: faker.internet.userName(),
       email: faker.internet.email(),
-      totalPosts: 500,
-      follower: 10085,
-      following: 69,
-      totalPosts: 109,
-      reach: 235823,
-      engagement: 69789,
+      totalPosts: faker.number.int({ min: 10, max: 1000 }),
+      follower: faker.number.int({ min: 0, max: 1000000 }),
+      following: faker.number.int({ min: 0, max: 1000000 }),
+      totalPosts: faker.number.int({ min: 0, max: 100000 }),
+      reach: faker.number.int({ min: 0, max: 100000000 }),
+      engagement: faker.number.int({ min: 0, max: 100000 }),
     });
 
     console.log(newInfluencer);
