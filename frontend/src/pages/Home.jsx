@@ -28,6 +28,7 @@ const Home = () => {
             <Link to="/temp">Temp</Link>
           </Button>
         </div>
+        
       </main>
       <Footer />
     </>
