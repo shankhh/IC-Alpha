@@ -24,7 +24,7 @@ const Login = () => {
       <div className="z-40">
         <Navbar textColorHeader={"#fff"} />
       </div>
-      <div className=" w-full min-h-screen  top-0 absolute lg:grid lg:grid-cols-2 ">
+      <div className="p w-full min-h-screen  top-0 absolute lg:grid lg:grid-cols-2 ">
         <div className="hidden -z-10 bg-muted lg:block ">
           <div className="bg-black w-full h-full p-5"></div>
         </div>
