@@ -11,7 +11,7 @@ const Navbar = ({ textColorHeader = "#000" }) => {
   }, [location]);
 
   return (
-    <nav className="flex items-center justify-between mx-auto container  ">
+    <nav className="flex items-center justify-between   ">
       <div
         className="text-xl flex items-center  py-3 "
         style={{ color: textColorHeader }}
