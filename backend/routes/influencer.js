@@ -5,6 +5,22 @@ const router = express.Router();
 
 const { Influencer } = require("../models/Influencer");
 
+// get all influencers
+
+router.get("/all", async function(req, res) {
+  try {
+      const result = await Influencer.find();
+
+      return res.json({
+        influencers: result
+      });
+  } catch(error) {
+    return res.json({
+      influencers: []
+    })
+  }
+})
+
 // MOCK
 // postman / admin ui
 router.post("/create", async function (req, res) {

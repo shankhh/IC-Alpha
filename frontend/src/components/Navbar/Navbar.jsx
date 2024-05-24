@@ -11,7 +11,7 @@ const Navbar = ({ textColorHeader = "#000" }) => {
   }, [location]);
 
   return (
-    <nav className="flex items-center justify-between   ">
+    <nav className="flex items-center container justify-between   ">
       <div
         className="text-xl flex items-center  py-3 "
         style={{ color: textColorHeader }}
@@ -21,9 +21,10 @@ const Navbar = ({ textColorHeader = "#000" }) => {
           viewBox="0 0 24 24"
           fill="none"
           stroke={textColorHeader}
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+        
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           className="mr-2 h-6 w-6"
         >
           <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"></path>

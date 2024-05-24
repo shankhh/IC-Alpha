@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-
-
 const JoinOnboarding = () => {
   const [email, setEmail] = useState("");
   const fetchData = async () => {
