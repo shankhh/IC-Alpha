@@ -3,6 +3,16 @@ import { Link, useLocation } from "react-router-dom";
 
 import { Button } from "../ui/button";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+import Join from "@/pages/Join/Join";
 
 const Navbar = ({ textColorHeader = "#000" }) => {
   const location = useLocation();
@@ -12,34 +22,32 @@ const Navbar = ({ textColorHeader = "#000" }) => {
 
   return (
     <nav className="flex items-center container justify-between   ">
-      <div
-        className="text-xl flex items-center  py-3 "
-        style={{ color: textColorHeader }}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke={textColorHeader}
-        
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="mr-2 h-6 w-6"
+      <Link to="/">
+        <div
+          className="text-xl flex items-center  py-3 "
+          style={{ color: textColorHeader }}
         >
-          <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"></path>
-        </svg>{" "}
-        InstaConnect
-      </div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke={textColorHeader}
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="mr-2 h-6 w-6"
+          >
+            <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"></path>
+          </svg>
+          InstaConnect
+        </div>
+      </Link>
       <div className="flex gap-10">
         <Link to={"/discover"}>
-          <div className={isLogin ? "text-white" : null}> Discover</div>
+          <div> Discover </div>
         </Link>
-        <Link to={"/community"}>
-          <div className={isLogin ? "text-white" : null}> Community </div>
-        </Link>
-        <Link to={"/pricing"}>
-          <div> Pricing </div>
+        <Link to={"/campaigns"}>
+          <div> Campaigns </div>
         </Link>
         <Link to={"/aboutus"}>
           <div> About Us </div>
@@ -49,9 +57,13 @@ const Navbar = ({ textColorHeader = "#000" }) => {
         <Link to={"/login"}>
           <Button variant="outline">Login</Button>
         </Link>
-        <Link to={"/join"}>
-          <Button>Join</Button>
-        </Link>
+        {/* Join Dialog */}
+        <Dialog>
+          <DialogTrigger>
+            <Button variant="outline">Join</Button>
+          </DialogTrigger>
+          <Join />
+        </Dialog>
       </div>
     </nav>
   );

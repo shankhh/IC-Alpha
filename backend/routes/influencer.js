@@ -7,19 +7,19 @@ const { Influencer } = require("../models/Influencer");
 
 // get all influencers
 
-router.get("/all", async function(req, res) {
+router.get("/all", async function (req, res) {
   try {
-      const result = await Influencer.find();
+    const result = await Influencer.find();
 
-      return res.json({
-        influencers: result
-      });
-  } catch(error) {
     return res.json({
-      influencers: []
-    })
+      influencers: result,
+    });
+  } catch (error) {
+    return res.json({
+      influencers: [],
+    });
   }
-})
+});
 
 // MOCK
 // postman / admin ui
@@ -37,6 +37,7 @@ router.post("/create", async function (req, res) {
       totalPosts: faker.number.int({ min: 0, max: 100000 }),
       reach: faker.number.int({ min: 0, max: 100000000 }),
       engagement: faker.number.int({ min: 0, max: 100000 }),
+      password: faker.lorem(),
     });
 
     // save to our database
@@ -66,6 +67,7 @@ router.get("/seed", async function (req, res) {
       totalPosts: faker.number.int({ min: 0, max: 100000 }),
       reach: faker.number.int({ min: 0, max: 100000000 }),
       engagement: faker.number.int({ min: 0, max: 100000 }),
+      password: faker.lorem(),
     });
 
     console.log(newInfluencer);

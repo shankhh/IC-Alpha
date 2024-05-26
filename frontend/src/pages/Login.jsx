@@ -1,16 +1,24 @@
 import { Link } from "react-router-dom";
-import { DialogTrigger, Dialog } from "@/components/ui/dialog";
 import { useEffect } from "react";
-import Navbar from "@/components/Navbar/Navbar";
+
+import Join from "./Join/Join";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 // import FacebookDialog from "@/components/Auth/Facebook/FacebookDialog";
 
-const INSTAGRAM_APP_ID = import.meta.env.VITE_INSTAGRAM_APP_ID; 
-console.log(INSTAGRAM_APP_ID)
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
+const INSTAGRAM_APP_ID = import.meta.env.VITE_INSTAGRAM_APP_ID;
+console.log(INSTAGRAM_APP_ID);
 
 const Login = () => {
   function GRANT_ACCESS_INSTA() {
@@ -21,9 +29,6 @@ const Login = () => {
 
   return (
     <div className="relative min-h-screen">
-      <div className="z-40">
-        <Navbar textColorHeader={"#fff"} />
-      </div>
       <div className="p w-full min-h-screen  top-0 absolute lg:grid lg:grid-cols-2 ">
         <div className="hidden -z-10 bg-muted lg:block ">
           <div className="bg-black w-full h-full p-5"></div>
@@ -42,7 +47,7 @@ const Login = () => {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="m@example.com"
+                  placeholder="example@mail.com"
                   required
                 />
               </div>
@@ -61,37 +66,26 @@ const Login = () => {
               <Button type="submit" className="w-full">
                 Login
               </Button>
-              <Button variant="outline" className="w-full">
-                Login with Google
-              </Button>
-              {/* <Dialog>
-                <DialogTrigger>
-                  <Button variant="outline" className="w-full">
-                    Login with Facebook
-                  </Button>
-                </DialogTrigger>
-                <FacebookDialog />
-              </Dialog> */}
-              {/* <fb:login-button
-                scope="public_profile,email"
-                onlogin="checkLoginState();"
-              ></fb:login-button> */}
-              <Button onClick={GRANT_ACCESS_INSTA}>
+              <Button variant="outline" onClick={GRANT_ACCESS_INSTA}>
                 Grant access to Instagram
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account?{" "}
-              <Link href="#" className="underline">
-                Sign up
-              </Link>
+              Don&apos;t have an account? {/* Join Dialog */}
+              <Dialog>
+                <DialogTrigger>
+                  <Button variant="underline" className=" underline ">
+                    Sign up
+                  </Button>
+                </DialogTrigger>
+                <Join />
+              </Dialog>
             </div>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
-
-export default Login
+export default Login;
