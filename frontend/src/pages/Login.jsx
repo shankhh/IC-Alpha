@@ -1,32 +1,48 @@
+import { useUserContext } from "@/store/UserStore";
+import { axiosInstance } from "@/lib/axiosInstance";
+import { delay } from "@/lib/utils";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
-
 import Join from "./Join/Join";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-// import FacebookDialog from "@/components/Auth/Facebook/FacebookDialog";
-
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-
-const INSTAGRAM_APP_ID = import.meta.env.VITE_INSTAGRAM_APP_ID;
-console.log(INSTAGRAM_APP_ID);
+import { useState } from "react";
 
 const Login = () => {
-  function GRANT_ACCESS_INSTA() {
-    console.log("clicked");
-    window.location.href = `https://api.instagram.com/oauth/authorize?client_id=${INSTAGRAM_APP_ID}
-       &redirect_uri=https://localhost:5173/&scope=user_profile,user_media&response_type=code`;
-  }
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { setAuth } = useUserContext();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!email || !password) {
+      return toast.error("Missing email or password");
+    }
+    try {
+      const res = await axiosInstance.post("/client/signin", {
+        email: email,
+        password: password,
+      });
+      if (res.status == 200) {
+        toast.success(res.data.message);
+        const token = res.data.token;
+        const client = res.data.client;
+        localStorage.setItem("token", token);
+        localStorage.setItem("id", client._id);
+        localStorage.setItem("type", client.type);
+        setAuth({
+          id: client._id,
+          is_auth: true,
+          token: token,
+          type: client.type,
+        });
+        await delay(1000);
+        window.location.href = "/dashboard";
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error?.message);
+    }
+  };
   return (
     <div className="relative min-h-screen">
       <div className="p w-full min-h-screen  top-0 absolute lg:grid lg:grid-cols-2 ">
@@ -41,7 +57,7 @@ const Login = () => {
                 Enter your email below to login to your account
               </p>
             </div>
-            <div className="grid gap-4">
+            <form onSubmit={handleSubmit} className="grid gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -49,6 +65,7 @@ const Login = () => {
                   type="email"
                   placeholder="example@mail.com"
                   required
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div className="grid gap-2">
@@ -61,26 +78,17 @@ const Login = () => {
                     Forgot your password?
                   </Link>
                 </div>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  type="password"
+                  required
+                />
               </div>
               <Button type="submit" className="w-full">
                 Login
               </Button>
-              <Button variant="outline" onClick={GRANT_ACCESS_INSTA}>
-                Grant access to Instagram
-              </Button>
-            </div>
-            <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account? {/* Join Dialog */}
-              <Dialog>
-                <DialogTrigger>
-                  <Button variant="underline" className=" underline ">
-                    Sign up
-                  </Button>
-                </DialogTrigger>
-                <Join />
-              </Dialog>
-            </div>
+            </form>
           </div>
         </div>
       </div>

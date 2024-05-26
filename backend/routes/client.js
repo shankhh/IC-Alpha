@@ -1,7 +1,8 @@
+const jwt = require("jsonwebtoken");
 const express = require("express");
 const { faker } = require("@faker-js/faker");
 const bcrypt = require("bcrypt");
-
+const JWT_SECRET = process.env.JWT_SECRET;
 const router = express.Router();
 
 const { Influencer } = require("../models/Influencer");
@@ -13,8 +14,8 @@ const { ClientConstants } = require("../constants/client_constants");
 
 router.post("/signup", async function (req, res) {
   try {
-    const { email, password, type } = req.body;
-    if (!email || !password || !type) {
+    const { email, password, type, name } = req.body;
+    if (!email || !password || !type || !name) {
       return res.status(400).json({
         success: false,
         message: "Something went wrong",
@@ -35,6 +36,7 @@ router.post("/signup", async function (req, res) {
         email,
         password: hashedPassword,
         type,
+        name,
       });
 
       const savedClient = await newClient.save();
@@ -61,43 +63,44 @@ router.post("/signup", async function (req, res) {
 
 router.post("/signin", async function (req, res) {
   try {
-    const { email, password, type } = req.body;
-    if (Object.values(ClientConstants).includes(type)) {
-      // check if client exists
-      const clientExists = await Client.findOne({
-        email,
-      });
+    const { email, password } = req.body;
 
-      const isValidPassword = bcrypt.compareSync(
-        password,
-        clientExists.password
-      );
+    // check if client exists
+    const clientExists = await Client.findOne({
+      email,
+    });
 
-      if (!isValidPassword) {
-        return res.status(400).json({
-          success: false,
-          message: "Invalid email or password",
-        });
-      }
+    const isValidPassword = bcrypt.compareSync(password, clientExists.password);
 
-      if (!clientExists) {
-        return res.status(400).json({
-          success: false,
-          message: "client does not exist",
-        });
-      }
-
-      return res.status(200).json({
-        success: false,
-        message: "user signed in",
-        client: clientExists,
-      });
-    } else {
+    if (!clientExists) {
       return res.status(400).json({
         success: false,
-        message: "Type is not valid.",
+        message: "client does not exist",
       });
     }
+    if (!isValidPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+
+    const token = jwt.sign(
+      {
+        email: clientExists.email,
+        id: clientExists._id,
+      },
+      JWT_SECRET,
+      {
+        expiresIn: "1d",
+      }
+    );
+    return res.status(200).json({
+      success: false,
+      message: "Signed in",
+      client: clientExists,
+      token: token,
+    });
   } catch (error) {
     console.log(error);
     return res.status(400).json({

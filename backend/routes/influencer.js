@@ -4,7 +4,7 @@ const { faker } = require("@faker-js/faker");
 const router = express.Router();
 
 const { Influencer } = require("../models/Influencer");
-
+const { Client } = require("../models/Client");
 // get all influencers
 
 router.get("/all", async function (req, res) {
@@ -37,7 +37,7 @@ router.post("/create", async function (req, res) {
       totalPosts: faker.number.int({ min: 0, max: 100000 }),
       reach: faker.number.int({ min: 0, max: 100000000 }),
       engagement: faker.number.int({ min: 0, max: 100000 }),
-      password: faker.lorem(),
+      password: faker.number.int({ min: 100000, max: 999999 }),
     });
 
     // save to our database
@@ -49,6 +49,9 @@ router.post("/create", async function (req, res) {
     // return the data
   } catch (error) {
     console.log(error);
+    return res.status(500).json({
+      su,
+    });
   }
 });
 
@@ -67,19 +70,19 @@ router.get("/seed", async function (req, res) {
       totalPosts: faker.number.int({ min: 0, max: 100000 }),
       reach: faker.number.int({ min: 0, max: 100000000 }),
       engagement: faker.number.int({ min: 0, max: 100000 }),
-      password: faker.lorem(),
+      password: faker.number.int({ min: 100000, max: 999999 }),
     });
-
     console.log(newInfluencer);
     const influencer = await newInfluencer.save();
-
-    console.log(influencer);
-
     return res.json({
       data: influencer,
     });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "internal server error!",
+    });
   }
 });
 
@@ -110,6 +113,45 @@ router.post("/", async function (req, res) {
     });
   }
   // retrieve data from db
+});
+
+router.post("/connect/insta/:id", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const { id } = req.params;
+    if (!email || !password || !id) {
+      return res.status(400).json({
+        success: false,
+        message: "Email , password or id  is missing!",
+      });
+    }
+    const existingInsta = await Influencer.findOne({ email: email });
+    if (!existingInsta) {
+      return res.status(400).json({
+        success: false,
+        message: "This email does not exist!" /*  */,
+      });
+    }
+    if (existingInsta.password != password) {
+      return res.status(400).json({
+        success: false,
+        message: "Oops! This password didnot matched!" /*  */,
+      });
+    }
+    //connect it
+    await Client.findByIdAndUpdate(id, {
+      instagram: existingInsta._id,
+    });
+    return res.status(200).json({
+      success: true,
+      message: "Instagram connected successfully!",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "terribly went wrong!",
+    });
+  }
 });
 
 module.exports = router;

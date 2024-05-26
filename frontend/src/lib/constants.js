@@ -1,0 +1,3 @@
+export let CONSTANTS = {
+  INFLUENCER: "INFLUENCER",
+};

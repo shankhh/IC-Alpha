@@ -1,3 +1,6 @@
+import { delay } from "@/lib/utils";
+import toast from "react-hot-toast";
+import { axiosInstance } from "@/lib/axiosInstance";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,17 +14,33 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-
-export default function ConnectInstaModal() {
+import { useParams } from "react-router-dom";
+export default function ConnectInstaModal({ disabled }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const handleSubmit = () => {
-    console.log(email, password);
+  const params = useParams();
+  const { id } = params;
+  const handleConnect = async () => {
+    try {
+      if (!email || !password) {
+        return toast.error("Missing email or password");
+      }
+      const res = await axiosInstance.post(`influencer/connect/insta/${id}`, {
+        email: email,
+        password: password,
+      });
+      if (res.status == 200) {
+        toast.success(res.data.message);
+        await delay(1000);
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error?.message);
+    }
   };
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button type="submit" className="w-full">
+        <Button disabled={disabled} type="submit" className="w-full">
           Connect Instagram Account
         </Button>
       </DialogTrigger>
@@ -60,7 +79,7 @@ export default function ConnectInstaModal() {
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit" onClick={handleSubmit}>
+          <Button type="submit" onClick={handleConnect}>
             Connect
           </Button>
         </DialogFooter>
