@@ -10,6 +10,8 @@ import Discover from "./pages/Discover"
 import Community from "./pages/Community"
 import Pricing from "./pages/Pricing"
 import Temp from "./pages/Temp"
+import Dashboard from "./pages/Dashboard"
+import Profile from "./pages/Profile"
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
           <Route path="/community" Component={Community} />
           <Route path="/pricing" Component={Pricing} />
           <Route path="/temp" Component={Temp} />
+          <Route path="/dashboard" Component={Dashboard} />
+          <Route path="/profile" Component={Profile} />
         </Routes>
       </Router>
     </>
