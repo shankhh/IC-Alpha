@@ -1,55 +1,116 @@
-import { useState } from "react";
+import { CONSTANTS } from "@/lib/constants";
+import { delay } from "@/lib/utils";
+import { axiosInstance } from "@/lib/axiosInstance";
+import { Link, useNavigate } from "react-router-dom";
 
-const JoinOnboarding = () => {
-  const [email, setEmail] = useState("");
-  const fetchData = async () => {
-    console.log(email);
-    const result = await fetch("http://localhost:4269/influencer", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-      }),
-    });
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import toast from "react-hot-toast";
 
-    const data = await result.json();
-    console.log(data);
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
+// import
+const schema = z.object({
+  name: z.string().min(3, { message: "name should be minimum of 3 chars" }),
+  email: z.string().email({ message: "Invalid email!" }),
+  password: z
+    .string()
+    .min(6, { message: "Password length should be minimum of six" }),
+});
+
+export default function JoinOnboarding() {
+  const navigate = useNavigate();
+  const {
+    handleSubmit,
+    formState: { errors },
+    register,
+  } = useForm({
+    resolver: zodResolver(schema),
+  });
+  console.log(errors);
+  const onSubmit = async (data) => {
+    try {
+      const res = await axiosInstance.post("/client/signup", {
+        ...data,
+        ["type"]: CONSTANTS.INFLUENCER,
+      });
+      if (res.status == 201) {
+        toast.success("Account created successfully!");
+        await delay(1000);
+        navigate(`/join/influencer/next/${res.data.client?._id}`, {
+          replace: true,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || error?.message);
+    }
   };
-
   return (
-    <section className="min-h-screen min-w-full px-40">
-      <div className="min-w-full flex justify-center">
-        <h3 className="text-4xl">Enter your data</h3>
-      </div>
-      <div className="min-w-full flex justify-center">
-        <form className="min-w-[40rem]">
-          <div className="p-4 flex flex-col">
-            <label className="text-sm font-medium">Email</label>
-
-            <input
-              onChange={(e) => setEmail(e.target.value)}
-              className="p-3 border-2 rounded-full"
-            />
+    <div className="h-screen flex items-center justify-center">
+      <Card className="mx-auto max-w-sm">
+        <CardHeader>
+          <CardTitle className="text-xl text-center">Sign Up</CardTitle>
+          <CardDescription>
+            Enter your information to create an account
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                {...register("name")}
+                id="name"
+                placeholder="Joh Doe"
+                className={`${errors?.name ? "border-red-500" : ""}   `}
+              />
+              <span className="text-red-500">{errors?.name?.message}</span>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="m@example.com"
+                {...register("email")}
+                className={`${errors?.email ? "border-red-500" : ""}   `}
+              />
+              <span className="text-red-500">{errors?.email?.message}</span>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                {...register("password")}
+                id="password"
+                type="password"
+                className={`${errors?.password ? "border-red-500" : ""}   `}
+              />
+              <span className="text-red-500">{errors?.password?.message}</span>
+            </div>
+            <Button variant="outline" className="w-full">
+              Sign up
+            </Button>
+          </form>
+          <div className="mt-4 text-center text-sm">
+            Already have an account?{" "}
+            <Link href="#" className="underline">
+              Sign in
+            </Link>
           </div>
-        </form>
-      </div>
-      <div className="flex min-w-full justify-center">
-      <div className="flex flex-col gap-4 max-w-[20rem]">
-        <div
-          className="cursor-pointer px-4 p-2 rounded-md bg-black text-white min-w-full text-center"
-          onClick={fetchData}
-        >
-          Connect your instagram
-        </div>
-        <div className="px-4 p-2 rounded-md bg-black text-white min-w-full text-center">
-          Connect your facebook
-        </div>
-      </div>
-      </div>
-    </section>
+        </CardContent>
+      </Card>
+    </div>
   );
-};
-
-export default JoinOnboarding
+}

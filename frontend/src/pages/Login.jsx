@@ -37,7 +37,7 @@ const Login = () => {
           type: client.type,
         });
         await delay(1000);
-        window.location.href = "/dashboard";
+        window.location.href = "/profile";
       }
     } catch (error) {
       toast.error(error?.response?.data?.message || error?.message);
