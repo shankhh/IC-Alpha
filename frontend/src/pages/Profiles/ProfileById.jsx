@@ -4,11 +4,16 @@ import Navbar from "@/components/Navbar/Navbar";
 import { Button } from "@/components/ui/button";
 import { REACT_QUERY_KEYS } from "@/constants/REACT_QUERY";
 import { useQuery } from "@tanstack/react-query";
-
-export default function Profile() {
-  const {} = useQuery({
-    queryKey: [REACT_QUERY_KEYS.PROFILE_WITH_ID],
-    queryFn: () => {},
+import { axiosInstance } from "@/lib/axiosInstance";
+import { useParams } from "react-router-dom";
+export default function ProfileById() {
+  const { id } = useParams();
+  const { data, isLoading } = useQuery({
+    queryKey: [REACT_QUERY_KEYS.PROFILE_WITH_ID, id],
+    queryFn: async () => {
+      const response = await axiosInstance.get(`/influencer/profile/${id}`);
+      return response.data;
+    },
   });
   return (
     <>
@@ -18,9 +23,10 @@ export default function Profile() {
           <ProfileBio />
         </div>
         <div className="col-span-2">
-          <Stats />
+          <Stats data={data?.influencer?.instagram} />
         </div>
       </main>
+
       <Button className="absolute bottom-10 right-10 px-7 py-2"> Edit </Button>
     </>
   );

@@ -8,7 +8,10 @@ const ClientSchema = new mongoose.Schema({
   email: String,
   password: String,
   type: String,
-  instagram: mongoose.Schema.Types.ObjectId,
+  instagram: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Influencer",
+  },
 });
 
 module.exports.Client = mongoose.model("Client", ClientSchema);

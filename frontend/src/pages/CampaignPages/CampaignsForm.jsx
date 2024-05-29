@@ -35,6 +35,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 const schema = z.object({
   bio: z.string().min(3, { message: "Bio should be minimum of 3 chars" }),
   dob: z.date(),
@@ -43,7 +44,7 @@ const schema = z.object({
   geender: z.string(),
 });
 
-export default function JoinOnboarding() {
+export default function CampaignsForm() {
   const navigate = useNavigate();
   const [date, setDate] = useState(new Date());
   const {
@@ -78,25 +79,30 @@ export default function JoinOnboarding() {
   };
   return (
     <div className="h-screen flex items-center justify-center">
-      <Card className="mx-auto max-w-sm w-[350px]">
+      <Card className="mx-auto max-w-sm w-[650px]">
         <CardHeader>
-          <CardTitle className="text-xl text-center">Influencer Edit</CardTitle>
+          <CardTitle className="text-xl text-center">Create Campaign</CardTitle>
           <CardDescription className="text-center">
-            Enter your information
+            Make a new Campaign
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="grid gap-5">
             <div className="grid gap-2">
-              <Label htmlFor="name">Bio</Label>
+              <Label htmlFor="name">Campaign Title</Label>
               <Textarea {...register("bio")} className="resize-none" />
               <span className="text-red-500">{errors?.name?.message}</span>
             </div>
             <div className="grid gap-2">
+              <Label htmlFor="name">Campaign Details</Label>
+              <Textarea {...register("bio")} className="resize-none" />
+              <span className="text-red-500">{errors?.name?.message}</span>
+            </div>
+            {/* <div className="grid gap-2">
               <Label htmlFor="password">Select your Date of Birth</Label>
               <DatePicker date={date} setDate={setDate} control={control} />
               <span className="text-red-500">{errors?.password?.message}</span>
-            </div>
+            </div> */}
             <div className="grid gap-2 w-full">
               <Label htmlFor="email">Niche</Label>
               <Select>
@@ -142,7 +148,7 @@ export default function JoinOnboarding() {
               <span className="text-red-500">{errors?.email?.message}</span>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="email">Gender</Label>
+              <Label htmlFor="email">Influencer Gender</Label>
               <Controller
                 control={control}
                 name="gender"
@@ -165,17 +171,44 @@ export default function JoinOnboarding() {
                 )}
               />
             </div>
+            <div className="grid gap-2">
+              <Label htmlFor="email">Influencer Age Group</Label>
+              <Controller
+                control={control}
+                name="age"
+                render={({ field: { onChange } }) => (
+                  <Select onSele>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select age" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>All</SelectLabel>
+                        <SelectItem value={13 - 17}>13-17</SelectItem>
+                        <SelectItem value={18 - 27}>18-27</SelectItem>
+                        <SelectItem value={25 - 34}>25-34</SelectItem>
+                        <SelectItem value={35 - 44}>35-44</SelectItem>
+                        <SelectItem value={45 - 64}>45-64</SelectItem>
+                        {/* {GenderItems.map((gender) => {
+              return <SelectItem value={gender}>{gender}</SelectItem>;
+            })} */}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+            </div>
 
-            <Button variant="secondary" className="w-full">
-              Update
+            <Button variant="outline" className="w-full">
+              Create Campaign
             </Button>
           </form>
-          <div className="mt-4 text-center text-sm">
+          {/* <div className="mt-4 text-center text-sm">
             Already have an account?{" "}
             <Link href="#" className="underline">
-              Sign in
+              Sign in 
             </Link>
-          </div>
+          </div> */}
         </CardContent>
       </Card>
     </div>

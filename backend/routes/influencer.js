@@ -55,6 +55,26 @@ router.post("/create", async function (req, res) {
   }
 });
 
+router.get("/profile/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const influencer = await Client.findById(id)
+      .populate("instagram", "-password")
+      .select("-password");
+    return res.json({
+      message: "Fetched successfully!",
+      success: true,
+      influencer,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "internal server error!",
+    });
+  }
+});
+
 /**
  * Route to seed the database with some fake data
  * Will create 10 fake influencers

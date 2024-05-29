@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const DiscoverSearch = ({ filterTable, clearSearch }) => {
+const CampaignSearch = ({ filterTable, clearSearch }) => {
   const [search, setSearch] = useState("");
   const changeHandler = (e) => {
     setSearch(e.target.value);
@@ -19,9 +19,7 @@ const DiscoverSearch = ({ filterTable, clearSearch }) => {
       <div className="pt-12">
         {/* two heading */}
         <div className="flex flex-col items-center gap-y-3">
-          <h2 className="text-4xl font-semibold">
-            Buy shoutouts from social media influencers
-          </h2>
+          <h2 className="text-4xl font-semibold">Campaigns</h2>
           <h3 className="text-xl">
             Browse social media influencers by category, followers and price
           </h3>
@@ -52,4 +50,4 @@ const DiscoverSearch = ({ filterTable, clearSearch }) => {
   );
 };
 
-export default DiscoverSearch;
+export default CampaignSearch;

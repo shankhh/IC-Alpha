@@ -1,0 +1,3 @@
+export const REACT_QUERY_KEYS = {
+  PROFILE_WITH_ID: "PROFILE_WITH_IDS",
+};

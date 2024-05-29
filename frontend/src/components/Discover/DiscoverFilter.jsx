@@ -43,27 +43,16 @@ const SocialMediaPlatforms = [
   { name: "YouTube", logo: <FaYoutube /> },
 ];
 
-const Categories = [
-  "Fashion",
-  "Beauty",
+export const Categories = [
   "Technology",
-  "Home Decor",
   "Fitness",
   "Travel",
-  "Food",
+  "Fashion",
   "Art",
   "Gaming",
-  "Books",
-  "Music",
   "Sports",
-  "Pets",
-  "Health",
-  "Finance",
   "Education",
   "Photography",
-  "Outdoor",
-  "DIY",
-  "Movies",
 ];
 
 export default function DiscoverFilter() {
@@ -73,11 +62,11 @@ export default function DiscoverFilter() {
         <AccordioDiscover />
       </div>
       <div className="mt-[10px] -ml-2 md:hidden">
-        <Sheet >
+        <Sheet>
           <SheetTrigger className="flex items-center gap-2 border p-1 rounded-md shadow-md">
             <BsGridFill /> <p>Filter</p>
           </SheetTrigger>
-          <SheetContent className='overflow-y-auto pb-14'>
+          <SheetContent className="overflow-y-auto pb-14">
             <AccordioDiscover />
           </SheetContent>
         </Sheet>
@@ -108,7 +97,7 @@ const AccordioDiscover = () => {
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-2" className="border-0">
-          <AccordionTrigger>Categories</AccordionTrigger>
+          <AccordionTrigger>Niche</AccordionTrigger>
           <AccordionContent className="space-y-2">
             {Categories.map((category) => (
               <div className="flex items-center gap-3 ">

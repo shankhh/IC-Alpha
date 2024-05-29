@@ -1,0 +1,14 @@
+Campaign Fields
+->Title
+    ->Goals sort of Bio
+->Niche (checkbox)
+->Elibility(Engagement Reach Size) algo to match?? (Multiple Selector)
+    ->Country, Age, Gender
+->Next Page
+    ->Duration
+    ->Budget
+
+
+->Card view to review ()
+
+
