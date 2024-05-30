@@ -15,7 +15,7 @@ export function CampaignTable({ influencers }) {
       <TableCaption>A list of influencers.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Campaign Name</TableHead>
+          <TableHead className="w-[100px]">Username</TableHead>
           <TableHead>Platform</TableHead>
           <TableHead>Followers</TableHead>
           <TableHead className="text-right">Following</TableHead>

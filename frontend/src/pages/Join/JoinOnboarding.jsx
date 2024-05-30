@@ -1,3 +1,4 @@
+import { REACT_QUERY_KEYS } from "@/constants/REACT_QUERY";
 import { CONSTANTS } from "@/lib/constants";
 import { delay } from "@/lib/utils";
 import { axiosInstance } from "@/lib/axiosInstance";
@@ -23,6 +24,8 @@ import { Categories } from "@/components/Discover/DiscoverFilter";
 import { useState } from "react";
 import countryData from "../../data/country.json";
 import { genders } from "@/data/gender";
+import { useMutation } from "@tanstack/react-query";
+import { RingSpinner } from "react-spinners-kit";
 const CountryItems = countryData.map((countryObj) => {
   return countryObj.name.common;
 });
@@ -36,11 +39,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 const schema = z.object({
-  bio: z.string().min(3, { message: "Bio should be minimum of 3 chars" }),
+  bio: z
+    .string()
+    .min(10, { message: "Bio should be minimum of 10 characters" }),
   dob: z.date(),
   niche: z.string(),
   country: z.string(),
-  geender: z.string(),
+  gender: z.string(),
 });
 
 export default function JoinOnboarding() {
@@ -51,36 +56,40 @@ export default function JoinOnboarding() {
     formState: { errors },
     register,
     control,
+    watch,
   } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
       dob: new Date(),
     },
   });
-  console.log(errors);
-  const onSubmit = async (data) => {
-    try {
-      const res = await axiosInstance.post("/client/signup", {
-        ...data,
-        ["type"]: CONSTANTS.INFLUENCER,
+  const { isError, isPending, mutate } = useMutation({
+    mutationKey: [REACT_QUERY_KEYS.INFLUENCER_INFO_UPLOAD],
+    mutationFn: async (data) => {
+      const token = localStorage.getItem("token");
+      const res = await axiosInstance.post("/influencer/info", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-      if (res.status == 201) {
-        toast.success("Account created successfully!");
-        await delay(1000);
-        navigate(`/join/influencer/next/${res.data.client?._id}`, {
-          replace: true,
-        });
-      }
-    } catch (error) {
-      console.log(error);
+      return res.data;
+    },
+    onSuccess: async (data) => {
+      toast.success(data.message);
+      window.location.href = "/profile";
+    },
+    onError: async (error) => {
       toast.error(error?.response?.data?.message || error?.message);
-    }
+    },
+  });
+  const onSubmit = async (data) => {
+    mutate(data);
   };
   return (
     <div className="h-screen flex items-center justify-center">
       <Card className="mx-auto max-w-sm w-[350px]">
         <CardHeader>
-          <CardTitle className="text-xl text-center">Influencer Edit</CardTitle>
+          <CardTitle className="text-xl text-center">Influencer Info</CardTitle>
           <CardDescription className="text-center">
             Enter your information
           </CardDescription>
@@ -90,31 +99,47 @@ export default function JoinOnboarding() {
             <div className="grid gap-2">
               <Label htmlFor="name">Bio</Label>
               <Textarea {...register("bio")} className="resize-none" />
-              <span className="text-red-500">{errors?.name?.message}</span>
+              <span className="text-red-500 text-xs">
+                {errors?.bio?.message}
+              </span>
             </div>
             <div className="grid gap-2">
               <Label htmlFor="password">Select your Date of Birth</Label>
-              <DatePicker date={date} setDate={setDate} control={control} />
-              <span className="text-red-500">{errors?.password?.message}</span>
+              <DatePicker
+                date={watch("bio")}
+                setDate={setDate}
+                control={control}
+              />
+              <span className="text-red-500 text-xs">
+                {errors?.dob?.message}
+              </span>
             </div>
             <div className="grid gap-2 w-full">
               <Label htmlFor="email">Niche</Label>
-              <Select>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a niche" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Select a niche</SelectLabel>
-                    {Categories.map((cat, index) => (
-                      <SelectItem value={cat} key={index}>
-                        {cat}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <span className="text-red-500">{errors?.email?.message}</span>
+              <Controller
+                control={control}
+                name="niche"
+                render={({ field: { onChange } }) => (
+                  <Select onValueChange={onChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a niche" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Select a niche</SelectLabel>
+                        {Categories.map((cat, index) => (
+                          <SelectItem value={cat} key={index}>
+                            {cat}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+              <span className="text-red-500 text-xs">
+                {errors?.niche?.message}
+              </span>
             </div>
             <div className="grid gap-2">
               <Label htmlFor="email">Country</Label>
@@ -122,7 +147,7 @@ export default function JoinOnboarding() {
                 control={control}
                 name="country"
                 render={({ field: { onChange } }) => (
-                  <Select onChange={onChange}>
+                  <Select onValueChange={onChange}>
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select a country" />
                     </SelectTrigger>
@@ -139,7 +164,9 @@ export default function JoinOnboarding() {
                   </Select>
                 )}
               />
-              <span className="text-red-500">{errors?.email?.message}</span>
+              <span className="text-red-500 text-xs">
+                {errors?.country?.message}
+              </span>
             </div>
             <div className="grid gap-2">
               <Label htmlFor="email">Gender</Label>
@@ -147,7 +174,7 @@ export default function JoinOnboarding() {
                 control={control}
                 name="gender"
                 render={({ field: { onChange } }) => (
-                  <Select onSele>
+                  <Select onValueChange={onChange}>
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select a gender" />
                     </SelectTrigger>
@@ -164,11 +191,19 @@ export default function JoinOnboarding() {
                   </Select>
                 )}
               />
+              <span className="text-red-500 text-xs">
+                {errors?.gender?.message}
+              </span>
             </div>
-
-            <Button variant="secondary" className="w-full">
-              Update
-            </Button>
+            {isPending ? (
+              <Button variant="secondary" disabled className="w-full">
+                <RingSpinner color="#000" />
+              </Button>
+            ) : (
+              <Button variant="secondary" className="w-full">
+                Update
+              </Button>
+            )}
           </form>
           <div className="mt-4 text-center text-sm">
             Already have an account?{" "}

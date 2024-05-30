@@ -12,6 +12,15 @@ const ClientSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Influencer",
   },
+  bio: String,
+  dob: Date,
+  niche: String,
+  country: String,
+  gender: String,
+  oboarded: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports.Client = mongoose.model("Client", ClientSchema);

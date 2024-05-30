@@ -1,12 +1,11 @@
 import JoinInfluencerNext from "./pages/Join/JoinInfluencerNext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar/Navbar";
-import Home from "./pages/Home";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // Pages
+import Navbar from "./components/Navbar/Navbar";
+import Home from "./pages/Home";
 import Discover from "./pages/Discover";
-import Community from "./pages/Community";
-import Campaigns from "./pages/Campaigns";
+import AboutUs from "./pages/About";
 
 import Login from "./pages/Login";
 // import Join from "./pages/Join/Join";
@@ -22,6 +21,7 @@ import Dash from "./pages/Profiles/Dashboardd";
 import PrivateRoutes from "./pages/ProtectedRoutes/ProtectedRoutes";
 import UserProvider from "./store/UserStore";
 import CampaignsForm from "./pages/CampaignPages/CampaignsForm";
+import Campaigns from "./pages/Campaigns";
 
 const queryClient = new QueryClient();
 function App() {
@@ -54,6 +54,7 @@ function App() {
               </Route>
               <Route path="/discover" Component={Discover} />
               <Route path="/campaigns" Component={Campaigns} />
+              <Route path="/aboutus" Component={AboutUs} />
             </Routes>
           </Router>
         </UserProvider>

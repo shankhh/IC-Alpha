@@ -19,7 +19,9 @@ const CampaignSearch = ({ filterTable, clearSearch }) => {
       <div className="pt-12">
         {/* two heading */}
         <div className="flex flex-col items-center gap-y-3">
-          <h2 className="text-4xl font-semibold">Campaigns</h2>
+          <h2 className="text-4xl font-semibold">
+            Browse Campaigns, and be a part of your favourite Brand
+          </h2>
           <h3 className="text-xl">
             Browse social media influencers by category, followers and price
           </h3>
@@ -33,7 +35,7 @@ const CampaignSearch = ({ filterTable, clearSearch }) => {
                 onChange={changeHandler}
                 onKeyUp={onEnter}
                 className="rounded-md w-full text-xl py-2 px-4 border-2"
-                placeholder="search influencers by username"
+                placeholder="search for campaigns"
               />
               <button
                 onClick={clearSearch}

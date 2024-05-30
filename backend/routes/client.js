@@ -4,7 +4,7 @@ const { faker } = require("@faker-js/faker");
 const bcrypt = require("bcrypt");
 const JWT_SECRET = process.env.JWT_SECRET;
 const router = express.Router();
-
+const { injectToken, isAuth } = require("../middleware/index");
 const { Influencer } = require("../models/Influencer");
 const { Client } = require("../models/Client");
 
@@ -100,6 +100,25 @@ router.post("/signin", async function (req, res) {
       message: "Signed in",
       client: clientExists,
       token: token,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+});
+
+router.get("/profile", injectToken, isAuth, async (req, res) => {
+  try {
+    const { id } = req.user;
+    const client = await Client.findById(id)
+      .populate("instagram", "-password")
+      .select("-password");
+    return res.json({
+      success: true,
+      profile: client,
     });
   } catch (error) {
     console.log(error);

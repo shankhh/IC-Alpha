@@ -2,7 +2,7 @@ const express = require("express");
 const { faker } = require("@faker-js/faker");
 
 const router = express.Router();
-
+const { injectToken, isAuth } = require("../middleware/index");
 const { Influencer } = require("../models/Influencer");
 const { Client } = require("../models/Client");
 // get all influencers
@@ -165,6 +165,36 @@ router.post("/connect/insta/:id", async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Instagram connected successfully!",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "terribly went wrong!",
+    });
+  }
+});
+
+router.post("/info", injectToken, isAuth, async (req, res) => {
+  try {
+    const { bio, dob, niche, country, gender } = req.body;
+    if (!bio || !gender || !niche || !country || !gender || !dob) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing fields",
+      });
+    }
+    const { id } = req.user;
+    await Client.findByIdAndUpdate(id, {
+      bio,
+      dob,
+      niche,
+      country,
+      gender,
+      oboarded: true,
+    });
+    return res.json({
+      success: true,
+      message: "Infomation updated successfully!",
     });
   } catch (error) {
     return res.status(500).json({
