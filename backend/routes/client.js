@@ -14,11 +14,24 @@ const { ClientConstants } = require("../constants/client_constants");
 
 router.post("/signup", async function (req, res) {
   try {
-    const { email, password, type, name } = req.body;
-    if (!email || !password || !type || !name) {
+    const { email, password, type, name, companyName, companyWebsite } =
+      req.body;
+    console.log(type);
+    if (type == ClientConstants.business && (!companyName || !companyWebsite)) {
+      console.log("hello");
       return res.status(400).json({
         success: false,
-        message: "Something went wrong",
+        message: "Missing fields!",
+      });
+    }
+    if (
+      type == ClientConstants.influencer &&
+      (!email || !password || !type || !name)
+    ) {
+      console.log(type);
+      return res.status(400).json({
+        success: false,
+        message: "Missing fields!",
       });
     }
 
@@ -28,7 +41,15 @@ router.post("/signup", async function (req, res) {
         message: "Something went wrong",
       });
     }
-
+    const emailExist = await Client.findOne({
+      email: email,
+    });
+    if (emailExist) {
+      return res.status(400).json({
+        success: false,
+        message: "This email already exist!",
+      });
+    }
     if (Object.values(ClientConstants).includes(type)) {
       const hashedPassword = bcrypt.hashSync(password, 10);
 
@@ -37,6 +58,8 @@ router.post("/signup", async function (req, res) {
         password: hashedPassword,
         type,
         name,
+        companyName,
+        companyWebsite,
       });
 
       const savedClient = await newClient.save();
@@ -89,6 +112,7 @@ router.post("/signin", async function (req, res) {
       {
         email: clientExists.email,
         id: clientExists._id,
+        type: clientExists.type,
       },
       JWT_SECRET,
       {

@@ -1,8 +1,10 @@
+import ProfileRoutes from "./pages/ProfileRoutes/ProfileRoutes";
+import { CLIENT_CONSTANTS } from "./constants/Client";
 import JoinInfluencerNext from "./pages/Join/JoinInfluencerNext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // Pages
-import Navbar from "./components/Navbar/Navbar";
+import { useUserContext } from "./store/UserStore";
 import Home from "./pages/Home";
 import Discover from "./pages/Discover";
 import AboutUs from "./pages/About";
@@ -14,47 +16,48 @@ import BusinessForm from "./pages/Join/JoinBusiness";
 import InfluencerForm from "./pages/Join/JoinInfluencer";
 
 import Temp from "./pages/Temp";
-import Dashboard from "./pages/Profiles/Dashboard";
+import InlfluencerDashboard from "./pages/Profiles/InlfuencerDashboard";
 import Profile from "./pages/Profiles/Profile";
 import ProfileById from "./pages/Profiles/ProfileById";
-import Dash from "./pages/Profiles/Dashboardd";
+import BusinessProfile from "./pages/Profiles/BusinessProfile";
 import PrivateRoutes from "./pages/ProtectedRoutes/ProtectedRoutes";
 import UserProvider from "./store/UserStore";
 import CampaignsForm from "./pages/CampaignPages/CampaignsForm";
 import Campaigns from "./pages/Campaigns";
-
+import AuthRoutes from "./pages/AuthRoutes/AuthRoutes";
 const queryClient = new QueryClient();
 function App() {
+  const { auth } = useUserContext();
+  console.log(auth);
   return (
     <>
       <QueryClientProvider client={queryClient}>
         <UserProvider>
           <Router>
             <Routes>
-              {/* <Route path="/" Component={Home} /> */}
-              <Route path="/" Component={Home} />
-              <Route path="/login" Component={Login} />
-              <Route path="/join/business" Component={BusinessForm} />
-              <Route path="/join/influencer" Component={InfluencerForm} />
+              <Route element={<AuthRoutes />}>
+                <Route path="/login" Component={Login} />
+                <Route path="/join/business" Component={BusinessForm} />
+                <Route path="/join/influencer" Component={InfluencerForm} />
+                <Route
+                  path="/join/influencer/next/:id"
+                  Component={JoinInfluencerNext}
+                />
+              </Route>
               {/* <Route path="/join" Component={Join} /> */}
-              <Route
-                path="/join/influencer/next/:id"
-                Component={JoinInfluencerNext}
-              />
-              <Route path="/campaignform" Component={CampaignsForm} />
-
               <Route element={<PrivateRoutes />}>
-                <Route path="/join/onboarding" Component={JoinOnboarding} />
-
+                <Route path="/campaignform" Component={CampaignsForm} />
                 <Route path="/temp" Component={Temp} />
-                <Route path="/dashboard" Component={Dashboard} />
-                <Route path="/profile" Component={Profile} />
+                <Route path="/dashboard" Component={InlfluencerDashboard} />
+                <Route path="/profile" element={<ProfileRoutes />} />
                 <Route path="/profile/:id" Component={ProfileById} />
-                <Route path="/dash" Component={Dash} />
+
+                <Route path="/join/onboarding" Component={JoinOnboarding} />
               </Route>
               <Route path="/discover" Component={Discover} />
               <Route path="/campaigns" Component={Campaigns} />
               <Route path="/aboutus" Component={AboutUs} />
+              <Route path="/" Component={Home} />
             </Routes>
           </Router>
         </UserProvider>

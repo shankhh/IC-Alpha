@@ -15,10 +15,10 @@ export function DiscoverTable({ influencers }) {
       <TableCaption>A list of influencers.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Username</TableHead>
+          <TableHead>Username</TableHead>
           <TableHead>Followers</TableHead>
           <TableHead>Engagement</TableHead>
-          <TableHead className="text-right">Reach</TableHead>
+          <TableHead>Reach</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -27,7 +27,7 @@ export function DiscoverTable({ influencers }) {
             <TableCell className="font-medium">{influencer.username}</TableCell>
             <TableCell>{influencer.follower}</TableCell>
             <TableCell>{influencer.engagement}</TableCell>
-            <TableCell className="text-right">{influencer.reach}</TableCell>
+            <TableCell>{influencer.reach}</TableCell>
           </TableRow>
         ))}
       </TableBody>

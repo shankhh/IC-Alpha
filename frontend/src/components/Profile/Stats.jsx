@@ -3,7 +3,7 @@ import { Card, CardHeader, CardContent, CardTitle } from "../ui/card";
 export default function Stats({ data }) {
   return (
     <div>
-      <div className="flex  gap-2 items-center">
+      <div className="flex gap-2 items-center bg-slate-300">
         <Card className="w-full">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Followers</CardTitle>

@@ -1,28 +1,43 @@
 const express = require("express");
 const { faker } = require("@faker-js/faker");
+const { SOCKET_CONSTANTS } = require("../constants/SOCKET_CONSTANTS");
 const mongoose = require("mongoose");
-
+const { ClientConstants } = require("../constants/client_constants");
 const router = express.Router();
-
 const { Influencer } = require("../models/Influencer");
 // const { Client } = require("../models/Client");
 const { Campaign } = require("../models/Campaign");
+const { io } = require("../index");
+const { injectToken, isAuth } = require("../middleware/index");
 
 // get all influencers
 
 // creating a new campaign
-router.post("/create", async function (req, res) {
+router.post("/create", injectToken, isAuth, async function (req, res) {
   try {
-    const { title, description, tags, budget } = req.body;
-    const newCampaign = await Campaign({
-      title,
-      description,
-      tags,
-      budget,
+    const { niche, country, title, details, gender, age_group } = req.body;
+
+    if (!niche || !country || !title || !details || !gender || !age_group) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing fields!",
+      });
+    }
+    const newCampaign = new Campaign({
+      ...req.body,
+      client: req.user.id,
     });
-
+    const alreadyExist = await Campaign.findOne({
+      title: title,
+    });
+    if (alreadyExist) {
+      return res.status(400).json({
+        success: false,
+        message: "Ths campaign already exist!",
+      });
+    }
     const savedCampaign = await newCampaign.save();
-
+    req.io.emit(SOCKET_CONSTANTS.NEW_CAMPAIGN, { id: newCampaign._id });
     return res.status(201).json({
       success: true,
       message: "campaign created",
@@ -121,6 +136,34 @@ router.post("/influencer/interested", async function (req, res) {
       success: true,
       message: "Updated Successfully",
       campaign: updated,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong.",
+    });
+  }
+});
+
+router.post("/apply/:post_id", injectToken, isAuth, async (req, res) => {
+  const { id, type } = req.user;
+  const { post_id } = req.params;
+  console.log(req.user);
+  try {
+    if (type == ClientConstants.business) {
+      return res.status(400).json({
+        success: false,
+        message: "You cannot apply!",
+      });
+    }
+    await Campaign.findByIdAndUpdate(post_id, {
+      $addToSet: { interestedBy: id },
+    });
+    return res.json({
+      success: true,
+      id: post_id,
+      message: "Applied!",
     });
   } catch (error) {
     console.log(error);

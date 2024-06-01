@@ -13,15 +13,16 @@ export default function Profile() {
       return res.data;
     },
   });
+  console.log(data);
   return (
     <>
       <Navbar />
       <main className="container justify-center gap-4 mt-10 grid grid-cols-3  min-h-[70vh]">
         <div>
-          <ProfileBio />
+          <ProfileBio data={data?.profile} />
         </div>
         <div className="col-span-2">
-          <Stats data={data?.influencer?.instagram} />
+          <Stats data={data?.profile?.instagram} />
         </div>
       </main>
       <Button className="absolute bottom-10 right-10 px-7 py-2"> Edit </Button>

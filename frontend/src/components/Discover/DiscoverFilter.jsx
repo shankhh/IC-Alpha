@@ -1,18 +1,9 @@
-import {
-  FaTwitter,
-  FaFacebook,
-  FaInstagram,
-  FaLinkedinIn,
-  FaSnapchatGhost,
-  FaTiktok,
-  FaPinterest,
-  FaReddit,
-  FaTumblr,
-  FaYoutube,
-} from "react-icons/fa";
+import { FaFacebook, FaInstagram } from "react-icons/fa";
 import { MdLogout } from "react-icons/md";
-import { Checkbox } from "@/components/ui/checkbox";
 import { BsGridFill } from "react-icons/bs";
+import { DiscoverSelect } from "./DiscoverSelect";
+
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Accordion,
   AccordionContent,
@@ -28,19 +19,9 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-import { DiscoverSelect } from "./DiscoverSelect";
-
 const SocialMediaPlatforms = [
   { name: "Facebook", logo: <FaFacebook /> },
   { name: "Instagram", logo: <FaInstagram /> },
-  { name: "Twitter", logo: <FaTwitter /> },
-  { name: "LinkedIn", logo: <FaLinkedinIn /> },
-  { name: "Snapchat", logo: <FaSnapchatGhost /> },
-  { name: "TikTok", logo: <FaTiktok /> },
-  { name: "Pinterest", logo: <FaPinterest /> },
-  { name: "Reddit", logo: <FaReddit /> },
-  { name: "Tumblr", logo: <FaTumblr /> },
-  { name: "YouTube", logo: <FaYoutube /> },
 ];
 
 export const Categories = [

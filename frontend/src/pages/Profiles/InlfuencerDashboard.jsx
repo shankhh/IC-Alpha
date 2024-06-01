@@ -1,6 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
 import Navbar from "@/components/Navbar/Navbar";
-import Footer from "@/components/Footer/Footer";
 
 import {
   Activity,
@@ -43,7 +42,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-export default function Dashboard() {
+export default function InlfuencerDashboard() {
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -64,7 +63,7 @@ export default function Dashboard() {
           {/* <Link
             href="#"
             className="text-muted-foreground transition-colors hover:text-foreground"
-          >
+            >
             Profile
           </Link> */}
         </nav>

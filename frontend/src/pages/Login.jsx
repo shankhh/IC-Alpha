@@ -30,14 +30,17 @@ const Login = () => {
         localStorage.setItem("token", token);
         localStorage.setItem("id", client._id);
         localStorage.setItem("type", client.type);
+        await delay(1000);
+        if (client?.oboarded) {
+          window.location.href = "/join/onboarding";
+        }
         setAuth({
           id: client._id,
           is_auth: true,
           token: token,
           type: client.type,
         });
-        await delay(1000);
-        window.location.href = "/profile";
+        window.location.href = "/";
       }
     } catch (error) {
       toast.error(error?.response?.data?.message || error?.message);

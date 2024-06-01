@@ -1,5 +1,6 @@
 import { axiosInstance } from "@/lib/axiosInstance";
-import { useState, useContext, createContext, useEffect } from "react";
+import { useState, useContext, createContext, useEffect, useRef } from "react";
+import { io } from "socket.io-client";
 const initialState = {
   auth: {
     id: null,
@@ -8,19 +9,26 @@ const initialState = {
     type: "",
   },
   setAuth: () => {},
+  SocketClient: null,
 };
 const AppContext = createContext(initialState);
 export default function StoreProvider({ children }) {
+  const socketRef = useRef(null);
   const [auth, setAuth] = useState({
     id: localStorage.getItem("id"),
     is_auth: localStorage.getItem("token") ? true : false,
     token: "",
     type: localStorage.getItem("type"),
   });
+
   const sharedState = {
     auth: auth,
     setAuth: setAuth,
+    SocketClient: socketRef.current,
   };
+  useEffect(() => {
+    socketRef.current = io("http://localhost:4269");
+  }, []);
   useEffect(() => {
     async function checkAuthState() {
       const id = localStorage.getItem("id");

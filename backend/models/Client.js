@@ -21,6 +21,8 @@ const ClientSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  companyName: String,
+  companyWebsite: String,
 });
 
 module.exports.Client = mongoose.model("Client", ClientSchema);

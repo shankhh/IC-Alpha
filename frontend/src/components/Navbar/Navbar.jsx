@@ -1,8 +1,6 @@
 import React, { useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
-
 import { Button } from "../ui/button";
-
 import {
   Dialog,
   DialogContent,
@@ -11,15 +9,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
 import Join from "@/pages/Join/Join";
-
+import { useUserContext } from "../../store/UserStore";
+import ProfileDropdown from "./ProfileDropdown";
 const Navbar = ({ textColorHeader = "#000" }) => {
   const location = useLocation();
   const isLogin = useMemo(() => {
     return location.pathname.includes("login");
   }, [location]);
-
+  const { auth } = useUserContext();
   return (
     <nav className="flex items-center container justify-between   ">
       <Link to="/">
@@ -53,18 +51,25 @@ const Navbar = ({ textColorHeader = "#000" }) => {
           <div> About Us </div>
         </Link>
       </div>
-      <div className="flex gap-3">
-        <Link to={"/login"}>
-          <Button variant="outline">Login</Button>
-        </Link>
-        {/* Join Dialog */}
-        <Dialog>
-          <DialogTrigger>
-            <Button variant="outline">Join</Button>
-          </DialogTrigger>
-          <Join />
-        </Dialog>
-      </div>
+
+      {auth.is_auth ? (
+        <div className="">
+          <ProfileDropdown />
+        </div>
+      ) : (
+        <div className="flex gap-3">
+          <Link to={"/login"}>
+            <Button variant="outline">Login</Button>
+          </Link>
+          {/* Join Dialog */}
+          <Dialog>
+            <DialogTrigger>
+              <Button variant="outline">Join</Button>
+            </DialogTrigger>
+            <Join />
+          </Dialog>
+        </div>
+      )}
     </nav>
   );
 };
