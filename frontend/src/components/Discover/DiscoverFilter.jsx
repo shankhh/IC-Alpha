@@ -36,11 +36,11 @@ export const Categories = [
   "Photography",
 ];
 
-export default function DiscoverFilter() {
+export default function DiscoverFilter({ dispatch }) {
   return (
     <>
       <div className="w-[200px] hidden md:block">
-        <AccordioDiscover />
+        <AccordioDiscover dispatch={dispatch} />
       </div>
       <div className="mt-[10px] -ml-2 md:hidden">
         <Sheet>
@@ -56,18 +56,13 @@ export default function DiscoverFilter() {
   );
 }
 
-const AccordioDiscover = () => {
+const AccordioDiscover = ({ dispatch }) => {
   return (
     <div>
       <Accordion type="multiple" collapsible className="w-full">
         <AccordionItem value="item-1" className="border-0">
           <AccordionTrigger className="">Influencer Channel</AccordionTrigger>
           <AccordionContent className="space-y-2">
-            <div className="flex items-center gap-2 ">
-              <Checkbox />
-              <p>All</p>
-            </div>
-
             {SocialMediaPlatforms.map((socials) => (
               <div className="flex items-center gap-2">
                 <Checkbox />
@@ -91,7 +86,7 @@ const AccordioDiscover = () => {
         </AccordionItem>
       </Accordion>
       {/* dalo here  */}
-      <DiscoverSelect />
+      <DiscoverSelect dispatch={dispatch} />
     </div>
   );
 };

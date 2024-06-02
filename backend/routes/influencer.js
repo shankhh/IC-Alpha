@@ -1,6 +1,5 @@
 const express = require("express");
 const { faker } = require("@faker-js/faker");
-
 const router = express.Router();
 const { injectToken, isAuth } = require("../middleware/index");
 const { Influencer } = require("../models/Influencer");

@@ -34,12 +34,12 @@ const Login = () => {
         if (client?.oboarded) {
           window.location.href = "/join/onboarding";
         }
-        setAuth({
-          id: client._id,
-          is_auth: true,
-          token: token,
-          type: client.type,
-        });
+        // setAuth({
+        //   id: client._id,
+        //   is_auth: true,
+        //   token: token,
+        //   type: client.type,
+        // });
         window.location.href = "/";
       }
     } catch (error) {
@@ -55,9 +55,9 @@ const Login = () => {
         <div className="flex items-center justify-center py-12">
           <div className="mx-auto grid w-[350px] gap-6">
             <div className="grid gap-2 text-center">
-              <h1 className="text-3xl font-bold">Login</h1>
+              <h1 className="text-3xl font-bold">Sign In</h1>
               <p className="text-balance text-muted-foreground">
-                Enter your email below to login to your account
+                Enter your email below to sign in to your account
               </p>
             </div>
             <form onSubmit={handleSubmit} className="grid gap-4">
@@ -86,10 +86,11 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   type="password"
                   required
+                  placeholder="enter your password"
                 />
               </div>
               <Button type="submit" className="w-full">
-                Login
+                Sign In
               </Button>
             </form>
           </div>

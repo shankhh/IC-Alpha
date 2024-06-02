@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "../ui/button";
 import {
@@ -12,12 +12,22 @@ import {
 import Join from "@/pages/Join/Join";
 import { useUserContext } from "../../store/UserStore";
 import ProfileDropdown from "./ProfileDropdown";
+
 const Navbar = ({ textColorHeader = "#000" }) => {
   const location = useLocation();
+
   const isLogin = useMemo(() => {
     return location.pathname.includes("login");
   }, [location]);
+
   const { auth } = useUserContext();
+
+  const [activeItem, setActiveItem] = useState("/");
+
+  const handleItemClick = (item) => {
+    setActiveItem(item);
+  };
+
   return (
     <nav className="flex items-center container justify-between   ">
       <Link to="/">
@@ -41,30 +51,46 @@ const Navbar = ({ textColorHeader = "#000" }) => {
         </div>
       </Link>
       <div className="flex gap-10">
-        <Link to={"/discover"}>
+        <Link
+          to="/discover"
+          onClick={() => handleItemClick("Discover")}
+          className={`text-black ${activeItem === "Discover" && "font-bold"}`}
+        >
           <div> Discover </div>
         </Link>
-        <Link to={"/campaigns"}>
+        <Link
+          to={"/campaigns"}
+          onClick={() => handleItemClick("Campaigns")}
+          className={`text-black ${activeItem === "Campaigns" && "font-bold"}`}
+        >
           <div> Campaigns </div>
         </Link>
-        <Link to={"/aboutus"}>
+        <Link
+          to={"/aboutus"}
+          onClick={() => handleItemClick("AboutUs")}
+          className={`text-black ${activeItem === "AboutUs" && "font-bold"}`}
+        >
           <div> About Us </div>
         </Link>
       </div>
 
       {auth.is_auth ? (
-        <div className="">
+        <div className="pt-2">
           <ProfileDropdown />
         </div>
       ) : (
         <div className="flex gap-3">
           <Link to={"/login"}>
-            <Button variant="outline">Login</Button>
+            <Button variant="outline" className="border-gray-400">
+              Sign In
+            </Button>
           </Link>
           {/* Join Dialog */}
           <Dialog>
             <DialogTrigger>
-              <Button variant="outline">Join</Button>
+              <Button variant="outline" className="bg-gray-200 border-gray-400">
+                Sign Up
+              </Button>
             </DialogTrigger>
             <Join />
           </Dialog>

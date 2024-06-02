@@ -1,7 +1,6 @@
 require("dotenv").config(); //->env configure // to access env variables
 const { createServer } = require("http");
 const { Server } = require("socket.io");
-const routes = require("./routes/router.js");
 const express = require("express");
 const morgan = require("morgan"); // logging
 const cors = require("cors");
@@ -38,9 +37,10 @@ app.get("/", (req, res) => {
   res.json({ message: "hi world" });
 });
 
-routes(app);
 httpServer.listen(port, () => {
   console.log("⚡ server up : ", port);
 });
 module.exports = { io };
 require("./socket/");
+const routes = require("./routes/router.js");
+routes(app);

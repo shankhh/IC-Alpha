@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 const CampaignSearch = ({ filterTable, clearSearch }) => {
@@ -20,11 +21,9 @@ const CampaignSearch = ({ filterTable, clearSearch }) => {
         {/* two heading */}
         <div className="flex flex-col items-center gap-y-3">
           <h2 className="text-4xl font-semibold">
-            Browse Campaigns, and be a part of your favourite Brand
+            Browse Campaigns to be a part of your favourite Brand
           </h2>
-          <h3 className="text-xl">
-            Browse social media influencers by category, followers and price
-          </h3>
+          <h3 className="text-xl">Work with our partnered Brands</h3>
         </div>
         {/* end two heading */}
         {/* search bar */}
@@ -34,15 +33,16 @@ const CampaignSearch = ({ filterTable, clearSearch }) => {
               <input
                 onChange={changeHandler}
                 onKeyUp={onEnter}
-                className="rounded-md w-full text-xl py-2 px-4 border-2"
-                placeholder="search for campaigns"
+                className="rounded-md w-full font-medium py-2 px-4 border-2 border-black"
+                placeholder="search for campaigns :use keywords"
               />
-              <button
+              <Button
+                variant="outline"
                 onClick={clearSearch}
-                className="p-2 rounded-lg border-2 ml-3 px-5 py-1"
+                className="p-2  border-black ml-3 px-5 py-5"
               >
                 Clear
-              </button>
+              </Button>
             </div>
           </div>
         </div>

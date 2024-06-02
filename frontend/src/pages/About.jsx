@@ -2,20 +2,23 @@ import { Link } from "react-router-dom";
 
 import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/Navbar/Navbar";
+import { Separator } from "@/components/ui/separator";
+import { Instagram } from "lucide-react";
 
 export default function AboutUs() {
   return (
     <>
       <main className="flex flex-col min-h-screen container">
         <Navbar />
-        <section className="flex container items-center justify-center border rounded-md h-[50vh] mt-20 ">
-          <div className="min-w-full  pt-[10rem] pb-10">
+
+        <section className="flex container items-center justify-center border rounded-3xl h-[50vh] mt-20 ">
+          <div className="pb-10">
             <h1 className="text-5xl font-bold py-4 px-36 text-center">
               About Us
             </h1>
-            <br />
-            <br />
-            <br />
+          </div>
+          <Separator orientation="vertical" />
+          <div className="pb-10 pl-8 text-justify">
             <p>
               InfluenceConnect acts as a bridge between the world of social
               media influencers and the strategic needs of businesses. It

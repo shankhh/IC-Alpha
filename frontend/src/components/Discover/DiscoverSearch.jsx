@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button } from "../ui/button";
 
 const DiscoverSearch = ({ filterTable, clearSearch }) => {
   const [search, setSearch] = useState("");
@@ -20,11 +21,9 @@ const DiscoverSearch = ({ filterTable, clearSearch }) => {
         {/* two heading */}
         <div className="flex flex-col items-center gap-y-3">
           <h2 className="text-4xl font-semibold">
-            Buy shoutouts from social media influencers
+            Ready to unlock the true potential of influencer marketing?
           </h2>
-          <h3 className="text-xl">
-            Browse social media influencers by category, followers and price
-          </h3>
+          <h3 className="text-xl">Browse our partnered influencers</h3>
         </div>
         {/* end two heading */}
         {/* search bar */}
@@ -34,15 +33,16 @@ const DiscoverSearch = ({ filterTable, clearSearch }) => {
               <input
                 onChange={changeHandler}
                 onKeyUp={onEnter}
-                className="rounded-md w-full text-xl py-2 px-4 border-2"
-                placeholder="search influencers by username"
+                className="rounded-md w-full font-medium py-2 px-4 border-2 border-black"
+                placeholder="search by username"
               />
-              <button
+              <Button
+                variant="outline"
                 onClick={clearSearch}
-                className="p-2 rounded-lg border-2 ml-3 px-5 py-1"
+                className="p-2  border-black ml-3 px-5 py-5"
               >
                 Clear
-              </button>
+              </Button>
             </div>
           </div>
         </div>

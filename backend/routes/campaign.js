@@ -55,7 +55,10 @@ router.post("/create", injectToken, isAuth, async function (req, res) {
 // getting all the campaigns
 router.get("/all", async function (req, res) {
   try {
-    const campaigns = await Campaign.find({}).populate("interestedBy");
+    const campaigns = await Campaign.find({})
+      .populate("interestedBy")
+      .populate("client")
+      .sort("-_id");
 
     if (campaigns.length < 1) {
       return res.status(400).json({
@@ -154,7 +157,7 @@ router.post("/apply/:post_id", injectToken, isAuth, async (req, res) => {
     if (type == ClientConstants.business) {
       return res.status(400).json({
         success: false,
-        message: "You cannot apply!",
+        message: "Join Us today as an Influencer 😊",
       });
     }
     await Campaign.findByIdAndUpdate(post_id, {
@@ -174,4 +177,59 @@ router.post("/apply/:post_id", injectToken, isAuth, async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const campaign = await Campaign.findById(id).populate({
+      path: "interestedBy",
+      populate: {
+        path: "instagram",
+        model: "Influencer",
+      },
+    });
+    return res.json({
+      success: true,
+      campaign: campaign,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "terribly went wrong!",
+    });
+  }
+});
+router.post("/accept", injectToken, isAuth, async (req, res) => {
+  const { user_id, id } = req.body;
+  try {
+    await Campaign.findByIdAndUpdate(id, {
+      selected: user_id,
+    });
+    return res.json({
+      success: false,
+      message: "Accepted influencer successfully!",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "terribly went wrong!",
+    });
+  }
+});
+router.get("/message/:id", async (req, res) => {
+  try {
+    const campaign = await Campaign.findById(req.params.id);
+    return res.json({
+      success: true,
+      messages: campaign.messages,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "terribly went wrong!",
+    });
+  }
+});
 module.exports = router;

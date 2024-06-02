@@ -8,6 +8,7 @@ import CampaignCard from "@/components/Campaign/CampaignCard";
 import { useUserContext } from "@/store/UserStore";
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/axiosInstance";
+import DiscoverFilter from "@/components/Discover/DiscoverFilter";
 export default function Campaigns() {
   const [influencers, setInfluencers] = useState([]);
   const [search, setSearch] = useState("");
@@ -44,22 +45,26 @@ export default function Campaigns() {
     <section className="min-h-screen pb-14">
       <Navbar />
       <CampaignSearch filterTable={filterTable} clearSearch={clearSearch} />
-      <div className="container space-y-3">
-        {data?.campaigns?.map((item) => {
-          return (
-            <CampaignCard
-              age_group={item?.age_group}
-              country={item?.country}
-              gender={item?.gender}
-              niche={item?.niche}
-              title={item?.title}
-              interestedBy={item?.interestedBy}
-              details={item?.details}
-              amount={item?.amount}
-              id={item?._id}
-            />
-          );
-        })}
+      <div className="container grid grid-cols-5 space-y-3">
+        <div className="leftside pt-5"></div>
+        <div className="col-span-3 pr-10 space-y-5">
+          {data?.campaigns?.map((item) => {
+            return (
+              <CampaignCard
+                age_group={item?.age_group}
+                country={item?.country}
+                gender={item?.gender}
+                niche={item?.niche}
+                title={item?.title}
+                interestedBy={item?.interestedBy}
+                details={item?.details}
+                amount={item?.amount}
+                id={item?._id}
+                client={item?.client}
+              />
+            );
+          })}
+        </div>
       </div>
       <div className="container md:flex-row mt-10 flex-col flex gap-2 "></div>
     </section>

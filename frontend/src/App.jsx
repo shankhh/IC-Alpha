@@ -1,3 +1,5 @@
+import CampaignForum from "./pages/CampaignForum/CampaignForum";
+import AppliedInfluencer from "./pages/AppliedInfluencer/AppliedInfluencer";
 import ProfileRoutes from "./pages/ProfileRoutes/ProfileRoutes";
 import { CLIENT_CONSTANTS } from "./constants/Client";
 import JoinInfluencerNext from "./pages/Join/JoinInfluencerNext";
@@ -51,8 +53,12 @@ function App() {
                 <Route path="/dashboard" Component={InlfluencerDashboard} />
                 <Route path="/profile" element={<ProfileRoutes />} />
                 <Route path="/profile/:id" Component={ProfileById} />
-
                 <Route path="/join/onboarding" Component={JoinOnboarding} />
+                <Route
+                  path="/applied/influencer/:id"
+                  Component={AppliedInfluencer}
+                />
+                <Route path="/campaignforum/:id" Component={CampaignForum} />
               </Route>
               <Route path="/discover" Component={Discover} />
               <Route path="/campaigns" Component={Campaigns} />

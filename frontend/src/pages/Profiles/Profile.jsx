@@ -1,3 +1,4 @@
+import CampaignCard from "@/components/Campaign/CampaignCard";
 import ProfileBio from "@/components/Profile/ProfileBio";
 import Stats from "@/components/Profile/Stats";
 import Navbar from "@/components/Navbar/Navbar";
@@ -5,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { REACT_QUERY_KEYS } from "@/constants/REACT_QUERY";
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/axiosInstance";
+import { Link } from "react-router-dom";
 export default function Profile() {
   const { data } = useQuery({
     queryKey: [REACT_QUERY_KEYS.PROFILE],
@@ -13,7 +15,14 @@ export default function Profile() {
       return res.data;
     },
   });
-  console.log(data);
+  const businessCamp = useQuery({
+    queryKey: [REACT_QUERY_KEYS.BUSINESS_PROFILE_CAMPAIGS],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/client/profile/campaigns");
+      return res.data;
+    },
+  });
+  console.log(businessCamp);
   return (
     <>
       <Navbar />
@@ -23,9 +32,28 @@ export default function Profile() {
         </div>
         <div className="col-span-2">
           <Stats data={data?.profile?.instagram} />
+          <div className="mt-10">
+            {businessCamp.data?.campaigns.map((camp) => (
+              <CampaignCard
+                key={camp._id}
+                age_group={camp.age_group}
+                amount={camp.amount}
+                country={camp.country}
+                details={camp.details}
+                gender={camp.gender}
+                id={camp._id}
+                interestedBy={camp.interestedBy}
+                niche={camp.niche}
+                title={camp.title}
+                client={camp.client}
+                selected={camp?.selected}
+                completed={camp.completed}
+                // client_id={camp.client}
+              />
+            ))}
+          </div>
         </div>
       </main>
-      <Button className="absolute bottom-10 right-10 px-7 py-2"> Edit </Button>
     </>
   );
 }

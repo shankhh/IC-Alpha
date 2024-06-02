@@ -26,6 +26,7 @@ export default function StoreProvider({ children }) {
     setAuth: setAuth,
     SocketClient: socketRef.current,
   };
+
   useEffect(() => {
     socketRef.current = io("http://localhost:4269");
   }, []);

@@ -87,6 +87,7 @@ export default function CampaignsForm() {
       if (res.status == 201) {
         toast.success(res.data.message);
         await delay(1000);
+        navigate("/profile");
       }
     } catch (error) {
       console.log(error);
@@ -167,7 +168,7 @@ export default function CampaignsForm() {
               </div>
 
               <div className="grid gap-2">
-                <Label htmlFor="email">Price Range</Label>
+                <Label htmlFor="email">Price per Day</Label>
                 <MultiSelect
                   control={control}
                   name={"amount"}

@@ -6,11 +6,19 @@ import DiscoverFilter from "@/components/Discover/DiscoverFilter";
 import { DiscoverSelect } from "@/components/Discover/DiscoverSelect";
 import DiscoverLeftSidebar from "@/components/Discover/DiscoverLeftSidebar";
 import DiscoverSearch from "@/components/Discover/DiscoverSearch";
-
+import { useReducer } from "react";
+import { discoverReducer } from "@/components/Discover/DiscoverReducer";
+const initialArg = {
+  niche: [],
+  country: [],
+  age: [],
+  age: [],
+  gender: [],
+};
 export default function Discover() {
   const [influencers, setInfluencers] = useState([]);
   const [search, setSearch] = useState("");
-
+  const [state, dispatch] = useReducer(discoverReducer, initialArg);
   async function fetchData() {
     try {
       const res = await fetch("http://localhost:4269/influencer/all");
@@ -23,10 +31,8 @@ export default function Discover() {
     fetchData();
   }, []);
 
-
   const filterTable = (value) => {
     const filtered = influencers.filter((influencer) => {
-   
       return influencer.username.toLowerCase().includes(value);
     });
 
@@ -40,17 +46,14 @@ export default function Discover() {
   return (
     <section className="min-h-screen pb-14">
       <Navbar />
-      <DiscoverSearch
-        filterTable={filterTable}
-        clearSearch={clearSearch}
-      />
+      <DiscoverSearch filterTable={filterTable} clearSearch={clearSearch} />
       <div className="container md:flex-row mt-10 flex-col flex gap-2 ">
         <DiscoverLeftSidebar>
-          <DiscoverFilter />
+          <DiscoverFilter dispatch={dispatch} />
           {/* <DiscoverSelect /> */}
         </DiscoverLeftSidebar>
 
-        <DiscoverTable influencers={influencers} />
+        <DiscoverTable state={state} influencers={influencers} />
       </div>
     </section>
   );

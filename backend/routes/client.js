@@ -1,3 +1,4 @@
+const { SOCKET_CONSTANTS } = require("../constants/SOCKET_CONSTANTS");
 const jwt = require("jsonwebtoken");
 const express = require("express");
 const { faker } = require("@faker-js/faker");
@@ -7,9 +8,9 @@ const router = express.Router();
 const { injectToken, isAuth } = require("../middleware/index");
 const { Influencer } = require("../models/Influencer");
 const { Client } = require("../models/Client");
-
+const { Campaign } = require("../models/Campaign");
 const { ClientConstants } = require("../constants/client_constants");
-
+const { io } = require("../index");
 // get all influencers
 
 router.post("/signup", async function (req, res) {
@@ -143,6 +144,72 @@ router.get("/profile", injectToken, isAuth, async (req, res) => {
     return res.json({
       success: true,
       profile: client,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+});
+
+router.get("/profile/campaigns", injectToken, isAuth, async (req, res) => {
+  try {
+    const { id } = req.user;
+    const campaigns = await Campaign.find({
+      $or: [{ client: id }, { selected: id }] /*  */,
+    })
+      .populate("interestedBy")
+      .populate("client");
+    return res.json({
+      success: true,
+      campaigns: campaigns,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+});
+
+router.put("/completed/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { user_id } = req.body;
+    const updatedCampaign = await Campaign.findByIdAndUpdate(
+      id,
+      {
+        $addToSet: {
+          completedBy: user_id,
+        },
+      },
+      {
+        new: true,
+      }
+    );
+
+    if (updatedCampaign.completedBy.length == 2) {
+      updatedCampaign.completed = true;
+      await updatedCampaign.save();
+      io.to(id).emit(SOCKET_CONSTANTS.COMPLETED_CAMPAIGN, {
+        message: "Completed",
+      });
+    }
+
+    if (updatedCampaign.completedBy.length == 1) {
+      io.to(id).emit(SOCKET_CONSTANTS.GENERAL_INFO_FORUM, {
+        message:
+          "Other side has completed this campaign please click on complete to close this campaign",
+      });
+    }
+
+    return res.json({
+      success: true,
+      campaign: updatedCampaign,
+      message: "Completed from your side!",
     });
   } catch (error) {
     console.log(error);

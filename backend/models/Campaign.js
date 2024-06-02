@@ -21,6 +21,28 @@ const CampaignSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Client",
   },
+  completed: {
+    type: Boolean,
+    default: false,
+  },
+
+  completedBy: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Client",
+    },
+  ],
+  selected: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Client",
+  },
+  messages: [
+    {
+      user_id: mongoose.Schema.Types.ObjectId,
+      id: mongoose.Schema.Types.ObjectId,
+      message: String,
+    },
+  ],
 });
 
 module.exports.Campaign = mongoose.model("Campaign", CampaignSchema);
