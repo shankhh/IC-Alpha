@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import toast from "react-hot-toast";
-import DatePicker from "@/components/Auth/OnBoarding/DatePicker";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -38,6 +38,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import DatePickerCustom from "@/components/Auth/OnBoarding/DatePicker";
+import { useUserContext } from "@/store/UserStore";
 const schema = z.object({
   bio: z
     .string()
@@ -49,8 +51,10 @@ const schema = z.object({
 });
 
 export default function JoinOnboarding() {
+  console.log("onboarding");
   const navigate = useNavigate();
   const [date, setDate] = useState(new Date());
+  const { setAuth } = useUserContext();
   const {
     handleSubmit,
     formState: { errors },
@@ -76,6 +80,8 @@ export default function JoinOnboarding() {
     },
     onSuccess: async (data) => {
       toast.success(data.message);
+      localStorage.setItem("oboarded", true);
+      setAuth((auth) => ({ ...auth, oboarded: true }));
       window.location.href = "/profile";
     },
     onError: async (error) => {
@@ -105,11 +111,7 @@ export default function JoinOnboarding() {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="password">Select your Date of Birth</Label>
-              <DatePicker
-                date={watch("bio")}
-                setDate={setDate}
-                control={control}
-              />
+              <DatePickerCustom date={watch("dob")} control={control} />
               <span className="text-red-500 text-xs">
                 {errors?.dob?.message}
               </span>
@@ -205,12 +207,12 @@ export default function JoinOnboarding() {
               </Button>
             )}
           </form>
-          <div className="mt-4 text-center text-sm">
+          {/* <div className="mt-4 text-center text-sm">
             Already have an account?{" "}
             <Link href="#" className="underline">
               Sign in
             </Link>
-          </div>
+          </div> */}
         </CardContent>
       </Card>
     </div>

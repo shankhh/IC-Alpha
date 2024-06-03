@@ -8,12 +8,15 @@ import DiscoverLeftSidebar from "@/components/Discover/DiscoverLeftSidebar";
 import DiscoverSearch from "@/components/Discover/DiscoverSearch";
 import { useReducer } from "react";
 import { discoverReducer } from "@/components/Discover/DiscoverReducer";
+import { axiosInstance } from "@/lib/axiosInstance";
 const initialArg = {
   niche: [],
   country: [],
   age: [],
   age: [],
   gender: [],
+  influencers: [],
+  data: [],
 };
 export default function Discover() {
   const [influencers, setInfluencers] = useState([]);
@@ -21,15 +24,23 @@ export default function Discover() {
   const [state, dispatch] = useReducer(discoverReducer, initialArg);
   async function fetchData() {
     try {
-      const res = await fetch("http://localhost:4269/influencer/all");
-      const data = await res.json();
-
-      setInfluencers([...data.influencers]);
+      const res = await axiosInstance("http://localhost:4269/client/all");
+      const data = await res.data;
+      dispatch({
+        type: "updateState",
+        payload: data.influencer,
+      });
+      setInfluencers([...data.influencer]);
     } catch (error) {}
   }
+  console.log(influencers);
   useEffect(() => {
     fetchData();
   }, []);
+
+  // useEffect(() => {
+  //   dispatch({ type: "updateState" });
+  // }, [state]);
 
   const filterTable = (value) => {
     const filtered = influencers.filter((influencer) => {
@@ -42,18 +53,21 @@ export default function Discover() {
   const clearSearch = async () => {
     await fetchData();
   };
-
+  console.log(state.data);
   return (
     <section className="min-h-screen pb-14">
       <Navbar />
-      <DiscoverSearch filterTable={filterTable} clearSearch={clearSearch} />
+      <DiscoverSearch dispatch={dispatch} />
       <div className="container md:flex-row mt-10 flex-col flex gap-2 ">
         <DiscoverLeftSidebar>
           <DiscoverFilter dispatch={dispatch} />
-          {/* <DiscoverSelect /> */}
         </DiscoverLeftSidebar>
 
-        <DiscoverTable state={state} influencers={influencers} />
+        <DiscoverTable
+          state={state}
+          influencers={state.data}
+          dispatch={dispatch}
+        />
       </div>
     </section>
   );

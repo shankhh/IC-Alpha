@@ -62,22 +62,29 @@ const AccordioDiscover = ({ dispatch }) => {
       <Accordion type="multiple" collapsible className="w-full">
         <AccordionItem value="item-1" className="border-0">
           <AccordionTrigger className="">Influencer Channel</AccordionTrigger>
-          <AccordionContent className="space-y-2">
-            {SocialMediaPlatforms.map((socials) => (
-              <div className="flex items-center gap-2">
-                <Checkbox />
-                <p>{socials.name}</p>
-                {socials.logo}
-              </div>
-            ))}
-          </AccordionContent>
+          <AccordionContent className="space-y-2">sioc</AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-2" className="border-0">
           <AccordionTrigger>Niche</AccordionTrigger>
           <AccordionContent className="space-y-2">
             {Categories.map((category) => (
               <div className="flex items-center gap-3 ">
-                <Checkbox />
+                <Checkbox
+                  value={category}
+                  onCheckedChange={(e) => {
+                    if (e) {
+                      dispatch({
+                        type: "niche-select",
+                        payload: category,
+                      });
+                    } else {
+                      dispatch({
+                        type: "niche-remove",
+                        payload: category,
+                      });
+                    }
+                  }}
+                />
                 <p>{category}</p>
                 <MdLogout className="" />
               </div>

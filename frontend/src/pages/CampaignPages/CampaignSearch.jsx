@@ -7,14 +7,6 @@ const CampaignSearch = ({ filterTable, clearSearch }) => {
     setSearch(e.target.value);
   };
 
-  const onEnter = (e) => {
-    if (e.target.value.length < 1) return;
-
-    if (e.code === "Enter") {
-      filterTable(search);
-    }
-  };
-
   return (
     <section className="container flex justify-center">
       <div className="pt-12">
@@ -29,21 +21,25 @@ const CampaignSearch = ({ filterTable, clearSearch }) => {
         {/* search bar */}
         <div className="flex justify-center py-4">
           <div className="max-w-[80%] min-w-[80%]">
-            <div className="flex">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                filterTable(search);
+              }}
+              className="flex"
+            >
               <input
                 onChange={changeHandler}
-                onKeyUp={onEnter}
                 className="rounded-md w-full font-medium py-2 px-4 border-2 border-black"
                 placeholder="search for campaigns :use keywords"
               />
               <Button
                 variant="outline"
-                onClick={clearSearch}
                 className="p-2  border-black ml-3 px-5 py-5"
               >
-                Clear
+                Search
               </Button>
-            </div>
+            </form>
           </div>
         </div>
         {/* end search bar */}

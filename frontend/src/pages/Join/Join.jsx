@@ -35,7 +35,7 @@ const Join = () => {
             <div className="items-center border border-[#d9d9d9] px-7 py-2 rounded-md  gap-2 flex">
               <RadioGroupItem value="business" id="option-one" />
               <Label htmlFor="option-one" className="flex gap-2 items-center">
-                As a Buyer
+                As a Business
                 <Github />
               </Label>
             </div>

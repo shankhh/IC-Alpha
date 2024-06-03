@@ -53,7 +53,7 @@ function App() {
                 <Route path="/dashboard" Component={InlfluencerDashboard} />
                 <Route path="/profile" element={<ProfileRoutes />} />
                 <Route path="/profile/:id" Component={ProfileById} />
-                <Route path="/join/onboarding" Component={JoinOnboarding} />
+                <Route path="/join/onboarding" element={<JoinOnboarding />} />
                 <Route
                   path="/applied/influencer/:id"
                   Component={AppliedInfluencer}

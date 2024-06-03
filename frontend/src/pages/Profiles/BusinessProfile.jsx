@@ -44,12 +44,28 @@ export default function BusinessProfile() {
             campaigns={completedCampaigns}
             data={businessProfile.data?.profile}
           />
-          <div className="border border-[#d9d9d9] rounded-md p-4 shadow pb-[300px] ">
-            <Label className="text-xl font-black">Completed Campaigns</Label>
-            <CampaignCard
-              title="Done Hiring"
-              details="Last round was done using this platform"
-            />
+          <div className="border max-h-[600px] space-y-3 overflow-y-auto border-[#d9d9d9] rounded-md p-4 shadow pb-[300px] ">
+            <Label className="text-xl font-black">
+              Completed Campaigns ({completedCampaigns?.length}){" "}
+            </Label>
+            {completedCampaigns?.map((camp) => (
+              <CampaignCard
+                key={camp._id}
+                age_group={camp.age_group}
+                amount={camp.amount}
+                country={camp.country}
+                details={camp.details}
+                gender={camp.gender}
+                id={camp._id}
+                interestedBy={camp.interestedBy}
+                niche={camp.niche}
+                title={camp.title}
+                client={camp.client}
+                selected={camp?.selected}
+                // client_id={camp.client}
+                completed={camp?.completed}
+              />
+            ))}
           </div>
         </div>
 
@@ -65,21 +81,22 @@ export default function BusinessProfile() {
               </Button>
             </div>
             {campaigns?.map((camp) => (
-              <CampaignCard
-                key={camp._id}
-                age_group={camp.age_group}
-                amount={camp.amount}
-                country={camp.country}
-                details={camp.details}
-                gender={camp.gender}
-                id={camp._id}
-                interestedBy={camp.interestedBy}
-                niche={camp.niche}
-                title={camp.title}
-                client={camp.client}
-                selected={camp?.selected}
-                // client_id={camp.client}
-              />
+              <div key={camp._id}>
+                <CampaignCard
+                  age_group={camp.age_group}
+                  amount={camp.amount}
+                  country={camp.country}
+                  details={camp.details}
+                  gender={camp.gender}
+                  id={camp._id}
+                  interestedBy={camp.interestedBy}
+                  niche={camp.niche}
+                  title={camp.title}
+                  client={camp.client}
+                  selected={camp?.selected}
+                  // client_id={camp.client}
+                />
+              </div>
             ))}
           </div>
         </div>

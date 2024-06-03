@@ -8,6 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -29,10 +37,12 @@ const Login = () => {
         const client = res.data.client;
         localStorage.setItem("token", token);
         localStorage.setItem("id", client._id);
+
         localStorage.setItem("type", client.type);
+        localStorage.setItem("oboarded", client.oboarded);
         await delay(1000);
-        if (client?.oboarded) {
-          window.location.href = "/join/onboarding";
+        if (client.type == "INFLUENCER" && !client?.oboarded) {
+          return (window.location.href = "/join/onboarding");
         }
         // setAuth({
         //   id: client._id,
@@ -75,7 +85,7 @@ const Login = () => {
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                   <Link
-                    href="/forgot-password"
+                    to="/"
                     className="ml-auto inline-block text-sm underline"
                   >
                     Forgot your password?
@@ -92,7 +102,19 @@ const Login = () => {
               <Button type="submit" className="w-full">
                 Sign In
               </Button>
+              {/* <Button type="submit" className="w-full">
+                <Link to="/">Register now</Link>
+              </Button> */}
+              {/* Join Dialog */}
             </form>
+            <Dialog>
+              <DialogTrigger>
+                <Button variant="outline" className="w-full">
+                  Register Now
+                </Button>
+              </DialogTrigger>
+              <Join />
+            </Dialog>
           </div>
         </div>
       </div>

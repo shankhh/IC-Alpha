@@ -10,8 +10,11 @@ import {
   AtSign,
 } from "lucide-react";
 import { Separator } from "../ui/separator";
+import moment from "moment";
 export default function ProfileBio({ data }) {
-  console.log(data);
+  console.log("-->", data?.dob);
+  console.log(moment().format());
+
   return (
     <div className="flex gap-3 flex-col items-center justify-center border border-[#d9d9d9] rounded-lg p-4 shadow">
       <Avatar>
@@ -50,7 +53,7 @@ export default function ProfileBio({ data }) {
           <div className="flex gap-1">
             <Calendar /> Age
           </div>
-          <h1 className="font-md">25</h1>
+          <h1 className="font-md">{moment().diff(data?.dob, "years")} YO</h1>
         </div>
         <div className="flex justify-between px-10">
           <div className="flex gap-1">

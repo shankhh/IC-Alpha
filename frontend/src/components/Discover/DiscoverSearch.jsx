@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
 
-const DiscoverSearch = ({ filterTable, clearSearch }) => {
+const DiscoverSearch = ({ filterTable, clearSearch, dispatch }) => {
   const [search, setSearch] = useState("");
   const changeHandler = (e) => {
     setSearch(e.target.value);
+    dispatch({
+      type: "search",
+      payload: e.target.value,
+    });
   };
 
   const onEnter = (e) => {
@@ -29,21 +33,28 @@ const DiscoverSearch = ({ filterTable, clearSearch }) => {
         {/* search bar */}
         <div className="flex justify-center py-4">
           <div className="max-w-[80%] min-w-[80%]">
-            <div className="flex">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                dispatch({
+                  type: "search",
+                  payload: search,
+                });
+              }}
+              className="flex"
+            >
               <input
                 onChange={changeHandler}
-                onKeyUp={onEnter}
                 className="rounded-md w-full font-medium py-2 px-4 border-2 border-black"
                 placeholder="search by username"
               />
               <Button
                 variant="outline"
-                onClick={clearSearch}
                 className="p-2  border-black ml-3 px-5 py-5"
               >
-                Clear
+                Search
               </Button>
-            </div>
+            </form>
           </div>
         </div>
         {/* end search bar */}

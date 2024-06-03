@@ -7,6 +7,7 @@ const initialState = {
     is_auth: false,
     token: "",
     type: "",
+    oboarded: false,
   },
   setAuth: () => {},
   SocketClient: null,
@@ -36,6 +37,7 @@ export default function StoreProvider({ children }) {
       const is_auth = localStorage.getItem("token") ? true : false;
       const token = localStorage.getItem("token");
       const type = localStorage.getItem("type");
+      const oboarded = localStorage.getItem("oboarded");
       //implement get user functionality to retrieve current user data from token
       //along with  checking the authenticity of the token
       //     if (token) {
@@ -53,7 +55,7 @@ export default function StoreProvider({ children }) {
       //       }
       //     }
       //   }
-      setAuth({ id, is_auth, token, type });
+      setAuth({ id, is_auth, token, type, oboarded });
     }
     checkAuthState();
   }, [auth?.token]);

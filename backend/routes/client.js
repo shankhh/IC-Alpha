@@ -175,6 +175,31 @@ router.get("/profile/campaigns", injectToken, isAuth, async (req, res) => {
   }
 });
 
+router.get("/all", async (req, res) => {
+  try {
+    const client = await Client.find({
+      $and: [
+        {
+          type: ClientConstants.influencer,
+        },
+        {
+          instagram: { $exists: true },
+        },
+      ],
+    }).populate("instagram");
+    return res.json({
+      success: true,
+      influencer: client,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+});
+
 router.put("/completed/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -192,8 +217,9 @@ router.put("/completed/:id", async (req, res) => {
     );
 
     if (updatedCampaign.completedBy.length == 2) {
-      updatedCampaign.completed = true;
-      await updatedCampaign.save();
+      await Campaign.findByIdAndUpdate(id, {
+        completed: true,
+      });
       io.to(id).emit(SOCKET_CONSTANTS.COMPLETED_CAMPAIGN, {
         message: "Completed",
       });
@@ -210,6 +236,22 @@ router.put("/completed/:id", async (req, res) => {
       success: true,
       campaign: updatedCampaign,
       message: "Completed from your side!",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+});
+
+router.get("/:id", async (req, res) => {
+  try {
+    const client = await Client.findById(req.params.id);
+    return res.json({
+      success: true,
+      client: client,
     });
   } catch (error) {
     console.log(error);

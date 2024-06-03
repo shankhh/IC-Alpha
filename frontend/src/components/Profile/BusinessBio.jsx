@@ -2,8 +2,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
 
-export default function BusinessProfileBio({ data }) {
-  console.log(data);
+export default function BusinessProfileBio({ data, campaigns }) {
   return (
     <>
       <div className="flex gap-3 items-center justify-center border border-[#d9d9d9] rounded-md p-4">

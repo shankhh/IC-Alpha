@@ -7,6 +7,7 @@ import { REACT_QUERY_KEYS } from "@/constants/REACT_QUERY";
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/axiosInstance";
 import { Link } from "react-router-dom";
+import { useUserContext } from "@/store/UserStore";
 export default function Profile() {
   const { data } = useQuery({
     queryKey: [REACT_QUERY_KEYS.PROFILE],
@@ -22,6 +23,8 @@ export default function Profile() {
       return res.data;
     },
   });
+  const { auth } = useUserContext();
+
   console.log(businessCamp);
   return (
     <>
@@ -53,6 +56,15 @@ export default function Profile() {
             ))}
           </div>
         </div>
+        {auth.id == data?.profile?._id && (
+          <div className="flex gap-3">
+            <Link to="/join/onboarding">
+              <Button className="absolute bottom-10 right-10 px-7 py-2">
+                Edit
+              </Button>
+            </Link>
+          </div>
+        )}
       </main>
     </>
   );

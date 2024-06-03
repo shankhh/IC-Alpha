@@ -9,35 +9,21 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-export default function DatePicker({ date, setDate, control }) {
+import { DatePicker } from "react-rainbow-components";
+export default function DatePickerCustom({ date, setDate, control }) {
   return (
     //this for age verification
     <Controller
       control={control}
       name="dob"
       render={({ field: { onChange, value } }) => (
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant={"outline"}
-              className={cn(
-                "w-[280px] justify-start text-left font-normal",
-                !date && "text-muted-foreground"
-              )}
-            >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {value ? format(value, "PPP") : <span>Pick a date</span>}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0">
-            <Calendar
-              mode="single"
-              selected={value}
-              onSelect={onChange}
-              initialFocus
-            />
-          </PopoverContent>
-        </Popover>
+        <DatePicker
+          required
+          value={date}
+          label="DatePicker Label"
+          onChange={onChange}
+          borderRadius="semi-square"
+        />
       )}
     />
   );

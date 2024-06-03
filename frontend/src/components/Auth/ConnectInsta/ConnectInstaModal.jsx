@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+
 export default function ConnectInstaModal({ disabled }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,6 +33,7 @@ export default function ConnectInstaModal({ disabled }) {
       if (res.status == 200) {
         toast.success(res.data.message);
         await delay(1000);
+        window.location.href = "/login";
       }
     } catch (error) {
       toast.error(error?.response?.data?.message || error?.message);

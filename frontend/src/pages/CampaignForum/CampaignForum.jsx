@@ -19,6 +19,7 @@ export default function CampaignForum() {
   const { id } = useParams();
   const [messages, setMessages] = useState([]);
   const boxRef = useRef();
+  const [client, setClient] = useState({});
   const [message, setMessage] = useState({
     user_id: auth.id,
     id: id,
@@ -32,6 +33,7 @@ export default function CampaignForum() {
       return res.data;
     },
   });
+
   console.log(data);
   const acceptCampaign = async () => {
     try {
@@ -49,6 +51,25 @@ export default function CampaignForum() {
       );
     }
   };
+
+  useEffect(() => {
+    async function fetchUserById() {
+      if (data?.campaign?.client == auth.id) {
+        //im business
+        const res = await axiosInstance.get(
+          `/client/${data.campaign.selected}`
+        );
+        setClient(res.data.client);
+      } else {
+        console.log(data.campaign);
+        const res = await axiosInstance.get(`/client/${data.campaign.client}`);
+        setClient(res.data.client);
+      }
+    }
+    if (data) {
+      fetchUserById();
+    }
+  }, [data]);
 
   useEffect(() => {
     async function fetchMessages() {
@@ -96,7 +117,9 @@ export default function CampaignForum() {
             <Avatar>
               <AvatarFallback>IC</AvatarFallback>
             </Avatar>
-            <h1 className="font-semibold">Just a business guy</h1>
+            <h1 className="font-semibold">
+              {client?.name || client?.companyName}
+            </h1>
           </div>
           {!data?.campaign?.completedBy?.includes(auth.id) && (
             <Button onClick={acceptCampaign}>Completed</Button>

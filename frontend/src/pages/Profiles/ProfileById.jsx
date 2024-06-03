@@ -1,3 +1,4 @@
+import { useUserContext } from "../../store/UserStore";
 import ProfileBio from "@/components/Profile/ProfileBio";
 import Stats from "@/components/Profile/Stats";
 import Navbar from "@/components/Navbar/Navbar";
@@ -15,19 +16,18 @@ export default function ProfileById() {
       return response.data;
     },
   });
+  const { auth } = useUserContext();
   return (
     <>
       <Navbar />
       <main className="container justify-center gap-4 mt-10 grid grid-cols-3  min-h-[70vh]">
         <div>
-          <ProfileBio />
+          <ProfileBio data={data?.influencer} />
         </div>
         <div className="col-span-2">
           <Stats data={data?.influencer?.instagram} />
         </div>
       </main>
-
-      <Button className="absolute bottom-10 right-10 px-7 py-2"> Edit </Button>
     </>
   );
 }
